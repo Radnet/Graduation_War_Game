@@ -10,7 +10,7 @@ public class Cliente {
 	
 	public static void main(String[] args) throws UnknownHostException, IOException 
 	{
-		Socket servidor = new Socket("localhost", 12345);
+		Socket servidor = new Socket("52.91.210.31", 12345);
 		
 		System.out.println("O cliente se conectou ao servidor!");
 		
