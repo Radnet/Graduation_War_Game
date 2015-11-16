@@ -1122,7 +1122,7 @@ public class ControllerTabuleiro extends Observable {
 	}
 
 	public void btnProxJogada_click() {
-		if (vencedor == null) {
+		if (vencedor == null && meuExercito == jogadorDaVez) {
 			setTerritorioDestino(null);
 			setTerritorioOrigem(null);
 			proxJogada();
