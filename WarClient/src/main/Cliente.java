@@ -1,6 +1,9 @@
 package main;
 
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.*;
 import java.util.*;
 
@@ -10,7 +13,11 @@ public class Cliente {
 	
 	public static void main(String[] args) throws UnknownHostException, IOException 
 	{
-		Socket servidor = new Socket("52.91.210.31", 12345);
+		// Reading socket Ip and port from txt file
+		String pathString = System.getProperty("user.dir");
+		Path path = Paths.get(pathString + "\\ip.txt");
+		List<String> linhasIp = Files.readAllLines(path);
+		Socket servidor = new Socket(linhasIp.get(0), Integer.parseInt(linhasIp.get(1)));
 		
 		System.out.println("O cliente se conectou ao servidor!");
 		

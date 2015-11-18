@@ -1,5 +1,8 @@
 package threads;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.*;
 import java.util.*;
 
@@ -34,8 +37,13 @@ public class Servidor {
 	{
 		try
 		{	
+			// Pegando a porta a ser usada
+			String pathString = System.getProperty("user.dir");
+			Path path = Paths.get(pathString + "\\port.txt");
+			List<String> linhasIp = Files.readAllLines(path);
+			
 			// Abrindo socket para comunicação com clientes
-			servidor = new ServerSocket(12345);
+			servidor = new ServerSocket(Integer.parseInt(linhasIp.get(0)));
 			
 			System.out.println("Porta 12345 aberta!");
 			
