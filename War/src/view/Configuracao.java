@@ -226,7 +226,14 @@ public class Configuracao extends JFrame {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					ex.setSelecionado();
+					
+					// Marca todos os exercitos como não selecionados
+					for(Exercito exe: lstExercitos) {
+						if(exe.isSelecionado()) {
+							exe.setSelecionado();
+						}
+					}
+					ex.setSelecionado();					
 					repaint();
 					
 				}

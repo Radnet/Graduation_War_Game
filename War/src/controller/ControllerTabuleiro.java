@@ -2,6 +2,8 @@ package controller;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.*;
 
 import model.*;
@@ -77,10 +79,12 @@ public class ControllerTabuleiro extends Observable {
 		meuExercito = lstJogadores.get(0);
 	}
 	
+	
 	private ControllerTabuleiro() {
 
 	}
 
+	// Instanciação e retorno do singleton
 	public static ControllerTabuleiro getInstance() {
 		if (lstJogadores.size() > 0) {
 			if (controller == null) {
@@ -90,20 +94,24 @@ public class ControllerTabuleiro extends Observable {
 		return controller;
 	}
 
+	// Retorna o valor da variável qtdTroca
 	public int getQtdTroca() {
 		return qtdTroca;
 	}
 
+	// Retorna o valor da variável mensagem
 	public String getMensagem() {
 		return mensagem;
 	}
 
+	// Seta a mensagem
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
 		notificaMudancas();
 		this.mensagem = null;
 	}
 
+	// Carga dos territórios
 	private void carregaTerritorios() {
 		Territorio Alasca = new Territorio("Alasca",
 				new Ponto[] { new Ponto(86.1, 124.1), new Ponto(134.6, 124.1), new Ponto(111.4, 167.3),
@@ -627,7 +635,8 @@ public class ControllerTabuleiro extends Observable {
 			}
 		}
 	}
-
+	
+	// retorna a jogada atual
 	private Jogada descobreJogadas() {
 		Jogada jogada = null;
 		for (Jogada j : lstJogadas) {
@@ -638,6 +647,7 @@ public class ControllerTabuleiro extends Observable {
 		return jogada;
 	}
 
+	// Calcula a quantidade de soldados baseado na quantidade de territórios
 	private void calculaSoldados() {
 
 		int i = 0;
@@ -684,7 +694,8 @@ public class ControllerTabuleiro extends Observable {
 		}
 
 	}
-
+	
+	// Retorna se o continente pertence por completo ao jogador.
 	private boolean calculaBonusContinente(Continente c) {
 		for (Territorio t : c.getLstTerritorios()) {
 			if (t.getLstSoldados().get(0).getExercito() != jogadorDaVez) {
@@ -693,7 +704,8 @@ public class ControllerTabuleiro extends Observable {
 		}
 		return true;
 	}
-
+	
+	// Move para o próximo jogador
 	private void proxJogador() {
 
 		// Desmarca quem está ativo na lista de jogadores
@@ -720,6 +732,7 @@ public class ControllerTabuleiro extends Observable {
 
 	}
 
+	// Descobre o emxercito (modelo) de acordo com a string 
 	private Exercito descobreExercito(String nome) {
 		Exercito jogador = null;
 		for (Exercito e : lstJogadores) {
@@ -730,12 +743,14 @@ public class ControllerTabuleiro extends Observable {
 		return jogador;
 	}
 
+	// Verifica se o exército passado por string (cor) possui algum território
 	public boolean possuiTerritorio(String nome) {
 
 		return possuiTerritorio(descobreExercito(nome));
 
 	}
 
+	// Verifica se o exército passado por parametro possui algum território.
 	public boolean possuiTerritorio(Exercito e) {
 
 		for (Continente c : lstContinentes) {
@@ -762,9 +777,7 @@ public class ControllerTabuleiro extends Observable {
 
 	}
 
-	/**
-	 * 
-	 */
+	// Prepara o tabuleiro
 	public void preparaTabuleiro() {
 
 		if (lstJogadores.size() > 0) {
@@ -779,6 +792,7 @@ public class ControllerTabuleiro extends Observable {
 		}
 	}
 
+	// Distribui os objetivos
 	private void distribuiObjetivos() {
 
 		deckObjetivos = DeckObjetivos.getInstance();
@@ -821,6 +835,7 @@ public class ControllerTabuleiro extends Observable {
 
 	}
 
+	// Distribui as cartas no início do jogo
 	private void distribuiCartasInicio() {
 
 		deck.embaralhaDeck();
@@ -838,6 +853,7 @@ public class ControllerTabuleiro extends Observable {
 		itJogador = getLstJogadores().iterator();
 	}
 
+	// Distribui os exércitos sob os territorios de acordo com o deck de cartas de cada jogador.
 	private void distribuirExercitosInicio() {
 		for (model.Exercito e : getLstJogadores()) {
 			for (Carta c : e.getLstCartas()) {
@@ -850,11 +866,13 @@ public class ControllerTabuleiro extends Observable {
 		}
 	}
 
+	// Embaralha uma lista genérica passada por parâmetro
 	public static void embaralhaLista(List<?> lst) {
 		long seed = System.nanoTime();
 		Collections.shuffle(lst, new Random(seed));
 	}
 
+	// Descobre qual o território sob uma determinada coordenada
 	private Territorio descobreTerritorioClicado(int x, int y) {
 
 		Territorio territorio = null;
@@ -870,11 +888,13 @@ public class ControllerTabuleiro extends Observable {
 		return territorio;
 	}
 
+	// Move um objeto entre duas listas. Utilizado para mover soldados entre territorios e cartas entre os decks
 	private <T> void moveEntreListas(Collection<T> lstOrigem, Collection<T> lstDestino, T objeto) {
 		lstOrigem.remove(objeto);
 		lstDestino.add(objeto);
 	}
 
+	// Muda para a próxima jogada
 	private void proxJogada() {
 		notificaMudancas();
 		for (Jogada j : controller.getLstJogadas()) {
@@ -910,6 +930,7 @@ public class ControllerTabuleiro extends Observable {
 
 	}
 
+	// Define o exército da vez.
 	private void setJogadorDaVez() {
 		for (Exercito e : lstJogadores) {
 			if (e.isAtivo()) {
@@ -918,18 +939,22 @@ public class ControllerTabuleiro extends Observable {
 		}
 	}
 
+	// Retorna o exercito da vez.
 	public Exercito getJogadorDaVez() {
 		return jogadorDaVez;
 	}
 	
+	// Retorna o exército do jogador
 	public Exercito getMeuExercito() {
 		return meuExercito;
 	}
 
+	// Retorna a lista de continentes
 	public ArrayList<Continente> getLstContinentes() {
 		return lstContinentes;
 	}
 
+	// Retorna o número de um dado, de acordo com o seu tipo e posição
 	public int getNumeroDado(char tipo, int ordem) {
 		if (tipo == 'a') {
 			return lstDadosAtaque.get(ordem).getNumero();
@@ -938,22 +963,27 @@ public class ControllerTabuleiro extends Observable {
 		}
 	}
 
+	// Retorna o território marcado como origem de um ataque/remanejamento
 	public Territorio getTerritorioOrigem() {
 		return territorioOrigem;
 	}
 
+	// Retorna o território marcado como destino de um ataque/remanejamento
 	public Territorio getTerritorioDestino() {
 		return territorioDestino;
 	}
 
+	// Retorna a lista de jogadas
 	public List<Jogada> getLstJogadas() {
 		return lstJogadas;
 	}
 
+	// Retorna a lista de jogadores
 	public List<model.Exercito> getLstJogadores() {
 		return lstJogadores;
 	}
 
+	// 
 	public Object[] getCartaJogador(int i) {
 
 		Object retorno[];
@@ -972,6 +1002,7 @@ public class ControllerTabuleiro extends Observable {
 		return null;
 	}
 
+	// Descobre qual a carta pelo nome do território
 	private Carta descobreCarta(String nomeTerritorio) {
 		for (Carta c : jogadorDaVez.getLstCartas()) {
 			if (c.getTerritorio() != null) {
@@ -987,10 +1018,12 @@ public class ControllerTabuleiro extends Observable {
 		return null;
 	}
 
+	// Devolve a carta passada como parametro para o deck
 	public void devolveCartaAoDeck(Carta c) {
 		moveEntreListas(jogadorDaVez.getLstCartas(), deck.getLstCartas(), c);
 	}
 
+	// Executa a troca de cartas por exércitos
 	public void executaTroca(String[] TerritorioCartas) {
 
 		if (vencedor == null) {
@@ -1020,6 +1053,7 @@ public class ControllerTabuleiro extends Observable {
 
 	}
 
+	// Calcula o número de cada troca
 	private void somaTroca() {
 
 		if (qtdTroca < 20) {
@@ -1030,10 +1064,12 @@ public class ControllerTabuleiro extends Observable {
 
 	}
 
+	// Retorna o deck de cartas
 	public Deck getDeck() {
 		return deck;
 	}
 
+	// Retorna a jogada atual
 	public Jogada getJogadaAtual() {
 		Jogada jogada = null;
 		for (Jogada j : getLstJogadas()) {
@@ -1044,6 +1080,7 @@ public class ControllerTabuleiro extends Observable {
 		return jogada;
 	}
 
+	// Seta o território passado como parâmetro como origem de um ataque/remanejamento
 	public void setTerritorioOrigem(Territorio territorioOrigem) {
 		this.territorioOrigem = territorioOrigem;
 		this.territorioDestino = null;
@@ -1059,6 +1096,7 @@ public class ControllerTabuleiro extends Observable {
 		notificaMudancas();
 	}
 
+	// Seta o território passado como parâmetro como território de destino de um ataque/remanejamento
 	public void setTerritorioDestino(Territorio territorioDestino) {
 		this.territorioDestino = territorioDestino;
 		if (getTerritorioDestino() != null) {
@@ -1068,10 +1106,11 @@ public class ControllerTabuleiro extends Observable {
 		notificaMudancas();
 	}
 
+	// Instancia e adiciona um novo exército à lista de jogadores
 	public static void setJogador(String s, Object cor) {
 		lstJogadores.add(new Exercito(s, cor));
 	}
-
+	// Ordena os dados de acordo com o resultado
 	private void ordenaLstDados() {
 		Collections.sort(lstDadosAtaque);
 		Collections.sort(lstDadosDefesa);
@@ -1079,6 +1118,7 @@ public class ControllerTabuleiro extends Observable {
 		notificaMudancas();
 	}
 
+	// Randimiza o valor dos dados de acordo com o tipo e com a quantidade de dados
 	public void JogaDados(char tipo, int numDados) {
 
 		if (descobreJogadas().getNome() == "Atacar") {
@@ -1121,6 +1161,7 @@ public class ControllerTabuleiro extends Observable {
 
 	}
 
+	// Tratamento do clique no botão de proxima jogada
 	public void btnProxJogada_click() {
 		if (vencedor == null && meuExercito == jogadorDaVez) {
 			setTerritorioDestino(null);
@@ -1129,6 +1170,7 @@ public class ControllerTabuleiro extends Observable {
 		}
 	}
 
+	// Notifica as mudanças aos observadores
 	private void notificaMudancas() {
 		// Se o objetivo do jogador da vez dor diferente de nulo e o jogo ainda não possuir vencedor
 		if (jogadorDaVez.getObjetivo() != null && vencedor == null) {
@@ -1147,11 +1189,13 @@ public class ControllerTabuleiro extends Observable {
 		notifyObservers();
 	}
 
+	// Determina um jogador como vencedor
 	private void setVencedor() {
 		this.vencedor = jogadorDaVez;
 
 	}
 
+	// Tratamento do clique no botão de jogar dados
 	public void btnJogarDados_click() {
 
 		if (vencedor == null) {
@@ -1197,15 +1241,18 @@ public class ControllerTabuleiro extends Observable {
 
 	}
 
+	// Exibe a mensagem de vencedor
 	public void telaVencedor() {
 		setMensagem("Exercito " + vencedor.getNome() + " ganhou o jogo! Objetivo: "
 				+ jogadorDaVez.getObjetivo().getDescricao());
 	}
 
+	// Retorna o jogador vencedor
 	public Exercito getVencedor() {
 		return this.vencedor;
 	}
 
+	// Move o soldado de continente da reserva para o territorio passado por parametro 
 	private boolean moveSoldadoContinente(Continente c, Territorio t) {
 		ListIterator<Soldado> itSoldado = jogadorDaVez.getLstSoldados().listIterator(0);
 
@@ -1221,6 +1268,7 @@ public class ControllerTabuleiro extends Observable {
 		return false;
 	}
 
+	// Move um soldado avulso (sem continente específico) para o territorio especificado
 	private boolean moveSoldadoAvulso(Territorio t) {
 		ListIterator<Soldado> itSoldado = jogadorDaVez.getLstSoldados().listIterator(0);
 
@@ -1235,6 +1283,7 @@ public class ControllerTabuleiro extends Observable {
 		return false;
 	}
 
+	// Remove o continente dos soldados
 	private void zeraSoldadosImigrantes() {
 
 		for (Continente c : lstContinentes) {
@@ -1248,6 +1297,7 @@ public class ControllerTabuleiro extends Observable {
 		}
 	}
 
+	// Tratamento do clique no mapa
 	public void pnlMapa_click(int x, int y, int botaoMouse) {
 
 		if (vencedor == null) {
@@ -1344,6 +1394,7 @@ public class ControllerTabuleiro extends Observable {
 
 	}
 
+	// Descobre o território correspondente às coordenadas passadas
 	private Continente descobreContinenteClicado(int x, int y) {
 		for (Continente c : getLstContinentes()) {
 			for (Territorio t : c.getLstTerritorios()) {
@@ -1355,16 +1406,15 @@ public class ControllerTabuleiro extends Observable {
 		return null;
 	}
 
+	// Retorna a quantidade de soldados na reserva de um exército (string nome)
 	public int getQtdSoldadosReserva(String nome) {
 		return descobreExercito(nome).getLstSoldados().size();
 	}
 
+	// Retorna true se é o jogador ativo, pela strin nome
 	public boolean isJogadorAtivo(String nome) {
 		return descobreExercito(nome).isAtivo();
 	}
 
-	public boolean validaTroca(HashSet<String> lstTroca) {
-		return false;
-	}
 
 }
