@@ -34,7 +34,7 @@ public class ControllerTabuleiro extends Observable {
 	
 	private Exercito jogadorDaVez;
 	private Exercito vencedor;
-	private Exercito meuExercito;
+	private static Exercito meuExercito;
 
 	// Bloco de inicialização das jogadas
 	{
@@ -74,11 +74,6 @@ public class ControllerTabuleiro extends Observable {
 			lstDadosDefesa.add(new Dado('d'));
 		}
 	}
-
-	{
-		meuExercito = lstJogadores.get(0);
-	}
-	
 	
 	private ControllerTabuleiro() {
 
@@ -94,6 +89,42 @@ public class ControllerTabuleiro extends Observable {
 		return controller;
 	}
 
+	public static void setMeuExercito(String nome, Color cor) {
+		Exercito e = new Exercito(nome, cor);
+		
+		meuExercito = e;
+	}
+	
+	public static boolean isExercitoSelecionado(String s) {
+		
+		// Se existe algum jogador que já selecionou o exército escolhido pelo jogador
+		for(Exercito ex: lstJogadores) {
+			if(ex.getNome() == s) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public static boolean tabuleiroPronto() {
+		if(lstJogadores.size() > 2 && meuExercito != null ){
+			System.out.println(lstJogadores.size() + " Jogadores conectados");
+			return true;
+		}
+		
+		if(lstJogadores.size() <= 2) {
+			System.out.println("Menos de 03 jogadores. Aguarde mais " + (3-lstJogadores.size()) + " jogadores conectarem");
+		}
+		
+		if(meuExercito == null) {
+			System.out.println("Você não selecionou nenhum exército");
+		}
+		
+		return false;
+	}
+	
+	
 	// Retorna o valor da variável qtdTroca
 	public int getQtdTroca() {
 		return qtdTroca;
@@ -948,6 +979,10 @@ public class ControllerTabuleiro extends Observable {
 	public Exercito getMeuExercito() {
 		return meuExercito;
 	}
+	
+	public static String getExercitoJogador() {
+		return meuExercito.getNome();
+	}
 
 	// Retorna a lista de continentes
 	public ArrayList<Continente> getLstContinentes() {
@@ -1110,6 +1145,17 @@ public class ControllerTabuleiro extends Observable {
 	public static void setJogador(String s, Object cor) {
 		lstJogadores.add(new Exercito(s, cor));
 	}
+	
+	// Remove o jogador da lista de jogadores
+	public static void unsetJogador(Object cor) {
+		
+		for(int i = 0; i < lstJogadores.size(); i++) {
+			if(lstJogadores.get(i).getCor() == cor) {
+				lstJogadores.remove(lstJogadores.get(i));
+			}
+		}
+	}
+	
 	// Ordena os dados de acordo com o resultado
 	private void ordenaLstDados() {
 		Collections.sort(lstDadosAtaque);

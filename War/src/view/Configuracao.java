@@ -58,38 +58,6 @@ public class Configuracao extends JFrame {
 		return lstExercitos;
 	}
 	
-	public boolean validaJogadores() {
-		
-		// Zerando a lista de jogadores
-		lstJogadores.clear();
-		
-		// Lendro a lista de exercitos, adicionando à lista de jogadores se o exército está selecionado
-		for(Exercito e: getLstexercitos()) {
-			if(e.isSelecionado()) {
-				lstJogadores.add(e);
-			}
-		}
-		
-		// Embaralhando a lista de jogadores
-		ControllerTabuleiro.embaralhaLista(lstJogadores);
-		
-		// Se existem mais de 2 jogadores, cria os jogadores no tabuleiro
-		if(lstJogadores.size() > 2 ) {			
-			for(Exercito e: lstJogadores) {
-				ControllerTabuleiro.setJogador(e.getNome(), e.getCor());
-			}
-			
-			// Adiciona os jogadores no pnlJogadores no tabuleiro 
-			PnlJogadores.setJogadores(lstJogadores);
-			
-			// Abre o tabuleiro
-			Tabuleiro.getInstance();
-			ControllerTabuleiro.getInstance().preparaTabuleiro();
-			return true;
-		}
-		return false;
-	}
-	
 	private void carregabotaoInicio() {
 		JButton btnInicializar = new JButton();
 		btnInicializar.setText("Iniciar Jogo");
@@ -129,8 +97,11 @@ public class Configuracao extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				if(validaJogadores()){
-					// Esconde a janela de configuração do jogo.
+				// Se já existem mais de 2 jogadores no tabuleiro, e o exército está selecionado, inicia o jogo
+				if(ControllerTabuleiro.tabuleiroPronto()){
+					// Esconde a janela de configuração do jogo.					
+					System.out.println("Você escolheu o exército" + ControllerTabuleiro.getExercitoJogador());
+					
 					setVisible(false);
 				};
 							
@@ -227,14 +198,25 @@ public class Configuracao extends JFrame {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					
-					// Marca todos os exercitos como não selecionados
-					for(Exercito exe: lstExercitos) {
-						if(exe.isSelecionado()) {
-							exe.setSelecionado();
+					if(ControllerTabuleiro.isExercitoSelecionado(ex.getNome())) {
+						System.out.println("Exército " + ex.getNome() + " previamente selecionado por outro jogador");
+					} else {
+						
+						// Se já tem algum exército selecionado, desceleciona todos
+						for(Exercito exe: lstExercitos) {
+							if (exe.isSelecionado()) {
+								exe.setSelecionado();
+								ControllerTabuleiro.unsetJogador(exe.cor);
+							}
 						}
+						
+						// Seleciona o exército clicado
+						ControllerTabuleiro.setMeuExercito(ex.getNome(), ex.getCor());
+						ControllerTabuleiro.setJogador(ex.getNome(), ex.getCor());
+						ex.setSelecionado();
+						repaint();
+						System.out.println("Exército selecionado: " + ControllerTabuleiro.getExercitoJogador());
 					}
-					ex.setSelecionado();					
-					repaint();
 					
 				}
 			});
@@ -245,6 +227,7 @@ public class Configuracao extends JFrame {
 		add(pnlExercitos);
 
 	}
-		
+
+	
 }
 
