@@ -15,7 +15,7 @@ import model.*;
 public class ControllerTabuleiro extends Observable {
 
 	private static ControllerTabuleiro controller;
-	private static List<model.Exercito> lstJogadores = new ArrayList<model.Exercito>();
+	private List<model.Exercito> lstJogadores = new ArrayList<model.Exercito>();
 
 	private List<Jogada> lstJogadas              = new ArrayList<Jogada>();
 	private ArrayList<Continente> lstContinentes = new ArrayList<Continente>();
@@ -35,7 +35,7 @@ public class ControllerTabuleiro extends Observable {
 	
 	private Exercito jogadorDaVez;
 	private Exercito vencedor;
-	private static Exercito meuExercito;
+	private static Exercito meuExercito = null;
 
 	// Bloco de inicialização das jogadas
 	{
@@ -81,11 +81,9 @@ public class ControllerTabuleiro extends Observable {
 	}
 
 	// Instanciação e retorno do singleton
-	public static ControllerTabuleiro getInstance() {
-		if (lstJogadores.size() > 0) {
-			if (controller == null) {
-				controller = new ControllerTabuleiro();
-			}
+	public static ControllerTabuleiro getInstance() {		
+		if (controller == null) {
+			controller = new ControllerTabuleiro();
 		}
 		return controller;
 	}
@@ -96,7 +94,7 @@ public class ControllerTabuleiro extends Observable {
 		meuExercito = e;
 	}
 	
-	public static boolean isExercitoSelecionado(String s) {
+	public boolean isExercitoSelecionado(String s) {
 		
 		// Se existe algum jogador que já selecionou o exército escolhido pelo jogador
 		for(Exercito ex: lstJogadores) {
@@ -108,7 +106,7 @@ public class ControllerTabuleiro extends Observable {
 		return false;
 	}
 	
-	public static boolean tabuleiroPronto() {
+	public boolean tabuleiroPronto() {
 		if(lstJogadores.size() > 2 && meuExercito != null ){
 			System.out.println(lstJogadores.size() + " Jogadores conectados");
 			return true;
@@ -748,13 +746,16 @@ public class ControllerTabuleiro extends Observable {
 		}
 
 		// Move o iterator para o próximo jogador da lista de jogadores
-		Exercito jogadorDaVez = null;
-
-		if (!itJogador.hasNext()) {
-			itJogador = controller.getLstJogadores().iterator();
+		
+		for(int i = 0; i < lstJogadores.size(); i ++) {
+			if(lstJogadores.get(i) == jogadorDaVez) {
+				if(lstJogadores.get(i+1) != null) {
+					jogadorDaVez =  lstJogadores.get(i+1);
+				} else {
+					jogadorDaVez = lstJogadores.get(0);
+				}				
+			}
 		}
-
-		jogadorDaVez = itJogador.next();
 
 		// Marca como o jogador ativo
 		jogadorDaVez.setAtivo();
@@ -1143,12 +1144,12 @@ public class ControllerTabuleiro extends Observable {
 	}
 
 	// Instancia e adiciona um novo exército à lista de jogadores
-	public static void setJogador(String s, Object cor) {
+	public void setJogador(String s, Object cor) {
 		lstJogadores.add(new Exercito(s, cor));
 	}
 	
 	// Remove o jogador da lista de jogadores
-	public static void unsetJogador(Object cor) {
+	public void unsetJogador(Object cor) {
 		
 		for(int i = 0; i < lstJogadores.size(); i++) {
 			if(lstJogadores.get(i).getCor() == cor) {
@@ -1232,7 +1233,7 @@ public class ControllerTabuleiro extends Observable {
 			}
 		}
 		
-		ServerConnection.GetInstance().SendMessageToServer(controller);
+		ServerConnection.GetInstance().SendMessageToServer(controller.getInstance());
 
 		setChanged();
 		notifyObservers();
