@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import controller.ControllerTabuleiro;
+import model.ServerConnection;
 
 @SuppressWarnings("serial")
 public class Configuracao extends JFrame {
@@ -101,7 +102,7 @@ public class Configuracao extends JFrame {
 				if(ControllerTabuleiro.tabuleiroPronto()){
 					// Esconde a janela de configuração do jogo.					
 					System.out.println("Você escolheu o exército" + ControllerTabuleiro.getExercitoJogador());
-					
+										
 					setVisible(false);
 				};
 							

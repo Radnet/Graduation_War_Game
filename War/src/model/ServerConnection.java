@@ -14,11 +14,11 @@ import controller.ControllerTabuleiro;
 
 public class ServerConnection {
 		
-	private ServerConnection   serverConnection;
-	private static String      ip;
-	private static String      port;
-	private static Socket      servidorSocket;
-	private static PrintStream servidorStream;
+	private static ServerConnection serverConnection;
+	private static String           ip;
+	private static String           port;
+	private static Socket           servidorSocket;
+	private static PrintStream      servidorStream;
 	
 	private ServerConnection ()
 	{
@@ -50,7 +50,7 @@ public class ServerConnection {
 		}
 	}
 	
-	public ServerConnection GetInstance()
+	public static ServerConnection GetInstance()
 	{
 		if(serverConnection == null)
 		{

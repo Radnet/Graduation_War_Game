@@ -17,17 +17,18 @@ public class ControllerTabuleiro extends Observable {
 	private static ControllerTabuleiro controller;
 	private static List<model.Exercito> lstJogadores = new ArrayList<model.Exercito>();
 
-	private List<Jogada> lstJogadas = new ArrayList<Jogada>();
+	private List<Jogada> lstJogadas              = new ArrayList<Jogada>();
 	private ArrayList<Continente> lstContinentes = new ArrayList<Continente>();
-	private Iterator<model.Exercito> itJogador = getLstJogadores().iterator();
-	private Iterator<Jogada> itJogada = getLstJogadas().iterator();
-	private ArrayList<Dado> lstDadosAtaque = new ArrayList<Dado>();
-	private ArrayList<Dado> lstDadosDefesa = new ArrayList<Dado>();
+	private Iterator<model.Exercito> itJogador   = getLstJogadores().iterator();
+	private Iterator<Jogada> itJogada            = getLstJogadas().iterator();
+
+	private ArrayList<Dado> lstDadosAtaque       = new ArrayList<Dado>();
+	private ArrayList<Dado> lstDadosDefesa       = new ArrayList<Dado>();
 	
-	private Deck deck;
-	private Territorio territorioOrigem;
-	private Territorio territorioDestino;
-	private String mensagem;
+	private Deck deck;                       // 
+	private Territorio territorioOrigem;     // nao comunicar
+	private Territorio territorioDestino;    // nao comunicar
+	private String mensagem;                 // 
 	private int qtdTroca;
 	private boolean conquistouTerritorio;
 	private DeckObjetivos deckObjetivos;
@@ -1230,6 +1231,8 @@ public class ControllerTabuleiro extends Observable {
 				telaVencedor();
 			}
 		}
+		
+		ServerConnection.GetInstance().SendMessageToServer(controller);
 
 		setChanged();
 		notifyObservers();
@@ -1462,5 +1465,10 @@ public class ControllerTabuleiro extends Observable {
 		return descobreExercito(nome).isAtivo();
 	}
 
+	public static void setController(ControllerTabuleiro controller) {
+		ControllerTabuleiro.controller = controller;
+	}
+	
+	
 
 }

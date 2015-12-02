@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -24,10 +25,16 @@ public class InputScanner implements Runnable {
 			
 			while (in_serv.hasNextLine()) 
 			{
-				ControllerTabuleiro controller = (ControllerTabuleiro) JsonReader.jsonToJava(in_serv.nextLine());
+				ControllerTabuleiro controllerFromServer = (ControllerTabuleiro) JsonReader.jsonToJava(in_serv.nextLine());
 				
-				// Now we need to do something with the controller received
+				// Set the controller received from server as the new controller without lost the "meuExercito" propertie
+				ControllerTabuleiro controllerLocal = ControllerTabuleiro.getInstance();
 				
+				Exercito meuExercito = controllerLocal.getMeuExercito();
+				
+				controllerFromServer.setMeuExercito(meuExercito.getNome(), (Color) meuExercito.getCor());
+				
+				ControllerTabuleiro.setController(controllerFromServer);
 			}
 			
 			in_serv.close();
