@@ -102,8 +102,9 @@ public class Configuracao extends JFrame {
 				if(ControllerTabuleiro.getInstance().tabuleiroPronto()){
 					// Esconde a janela de configuração do jogo.					
 					System.out.println("Você escolheu o exército" + ControllerTabuleiro.getExercitoJogador());
+					
 					ControllerTabuleiro.getInstance().preparaTabuleiro();
-					Tabuleiro.getInstance();					
+					Tabuleiro.getInstance();
 					setVisible(false);
 				};
 							

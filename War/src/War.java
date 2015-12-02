@@ -7,9 +7,11 @@ public class War {
 
 	public static void main(String[] args) {
 		
-		Configuracao.getInstance();
-		ControllerTabuleiro.getInstance();
 		ServerConnection.GetInstance();
+		ControllerTabuleiro.getInstance();
+		Configuracao.getInstance();
+		
+		
 	}
 
 }

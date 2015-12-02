@@ -81,12 +81,10 @@ public class ControllerTabuleiro extends Observable {
 	}
 
 	// Instanciação e retorno do singleton
-	public static ControllerTabuleiro getInstance() {
-		//if (lstJogadores.size() > 0) {
-			if (controller == null) {
-				controller = new ControllerTabuleiro();
-			}
-		//}
+	public static ControllerTabuleiro getInstance() {		
+		if (controller == null) {
+			controller = new ControllerTabuleiro();
+		}
 		return controller;
 	}
 
@@ -108,7 +106,7 @@ public class ControllerTabuleiro extends Observable {
 		return false;
 	}
 	
-	public  boolean tabuleiroPronto() {
+	public boolean tabuleiroPronto() {
 		if(lstJogadores.size() > 2 && meuExercito != null ){
 			System.out.println(lstJogadores.size() + " Jogadores conectados");
 			return true;
@@ -748,13 +746,16 @@ public class ControllerTabuleiro extends Observable {
 		}
 
 		// Move o iterator para o próximo jogador da lista de jogadores
-		Exercito jogadorDaVez = null;
-
-		if (!itJogador.hasNext()) {
-			itJogador = controller.getLstJogadores().iterator();
+		
+		for(int i = 0; i < lstJogadores.size(); i ++) {
+			if(lstJogadores.get(i) == jogadorDaVez) {
+				if(lstJogadores.get(i+1) != null) {
+					jogadorDaVez =  lstJogadores.get(i+1);
+				} else {
+					jogadorDaVez = lstJogadores.get(0);
+				}				
+			}
 		}
-
-		jogadorDaVez = itJogador.next();
 
 		// Marca como o jogador ativo
 		jogadorDaVez.setAtivo();
@@ -1232,7 +1233,7 @@ public class ControllerTabuleiro extends Observable {
 			}
 		}
 		
-		ServerConnection.GetInstance().SendMessageToServer(controller);
+		ServerConnection.GetInstance().SendMessageToServer(controller.getInstance());
 
 		setChanged();
 		notifyObservers();
