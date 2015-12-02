@@ -32,7 +32,8 @@ public class InputScanner implements Runnable {
 				
 				Exercito meuExercito = controllerLocal.getMeuExercito();
 				
-				controllerFromServer.setMeuExercito(meuExercito.getNome(), (Color) meuExercito.getCor());
+				if(meuExercito != null)
+					controllerFromServer.setMeuExercito(meuExercito.getNome(), (Color) meuExercito.getCor());
 				
 				ControllerTabuleiro.setController(controllerFromServer);
 			}

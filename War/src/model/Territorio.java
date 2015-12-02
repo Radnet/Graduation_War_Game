@@ -34,6 +34,11 @@ public class Territorio {
 	
 	JLabel lblNumExercitos = new JLabel();
 	
+	public Territorio()
+	{
+		
+	}
+	
 	public void addSoldado(Soldado s){
 		lstSoldados.add(s);
 	}

@@ -26,7 +26,7 @@ public class ServerConnection {
 		{
 			// Reading socket Ip and port from txt file
 			String pathString = System.getProperty("user.dir");
-			Path path         = Paths.get(pathString + "resources\\ip.txt");
+			Path path         = Paths.get(pathString + "\\resources\\ip.txt");
 			List<String> linhasIp = Files.readAllLines(path);
 			
 			// Setting ip and port

@@ -99,10 +99,11 @@ public class Configuracao extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				
 				// Se já existem mais de 2 jogadores no tabuleiro, e o exército está selecionado, inicia o jogo
-				if(ControllerTabuleiro.tabuleiroPronto()){
+				if(ControllerTabuleiro.getInstance().tabuleiroPronto()){
 					// Esconde a janela de configuração do jogo.					
 					System.out.println("Você escolheu o exército" + ControllerTabuleiro.getExercitoJogador());
-										
+					ControllerTabuleiro.getInstance().preparaTabuleiro();
+					Tabuleiro.getInstance();					
 					setVisible(false);
 				};
 							
@@ -199,7 +200,7 @@ public class Configuracao extends JFrame {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					
-					if(ControllerTabuleiro.isExercitoSelecionado(ex.getNome())) {
+					if(ControllerTabuleiro.getInstance().isExercitoSelecionado(ex.getNome())) {
 						System.out.println("Exército " + ex.getNome() + " previamente selecionado por outro jogador");
 					} else {
 						
@@ -207,14 +208,15 @@ public class Configuracao extends JFrame {
 						for(Exercito exe: lstExercitos) {
 							if (exe.isSelecionado()) {
 								exe.setSelecionado();
-								ControllerTabuleiro.unsetJogador(exe.cor);
+								ControllerTabuleiro.getInstance().unsetJogador(exe.cor);
 							}
 						}
 						
 						// Seleciona o exército clicado
 						ControllerTabuleiro.setMeuExercito(ex.getNome(), ex.getCor());
-						ControllerTabuleiro.setJogador(ex.getNome(), ex.getCor());
+						ControllerTabuleiro.getInstance().setJogador(ex.getNome(), ex.getCor());
 						ex.setSelecionado();
+						ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 						repaint();
 						System.out.println("Exército selecionado: " + ControllerTabuleiro.getExercitoJogador());
 					}
