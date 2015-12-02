@@ -736,7 +736,11 @@ public class ControllerTabuleiro extends Observable {
 	}
 	
 	// Move para o próximo jogador
-	private void proxJogador() {
+	private Exercito proxJogador() {
+		
+		if(jogadorDaVez == null) {
+			jogadorDaVez = lstJogadores.get(0);
+		}
 
 		// Desmarca quem está ativo na lista de jogadores
 		for (model.Exercito e : controller.getLstJogadores()) {
@@ -749,7 +753,7 @@ public class ControllerTabuleiro extends Observable {
 		
 		for(int i = 0; i < lstJogadores.size(); i ++) {
 			if(lstJogadores.get(i) == jogadorDaVez) {
-				if(lstJogadores.get(i+1) != null) {
+				if(i < lstJogadores.size()-1) {
 					jogadorDaVez =  lstJogadores.get(i+1);
 				} else {
 					jogadorDaVez = lstJogadores.get(0);
@@ -762,6 +766,8 @@ public class ControllerTabuleiro extends Observable {
 		setJogadorDaVez();
 		// setMensagem("Vez do Jogador " + jogadorDaVez.getNome());
 		notificaMudancas();
+		
+		return jogadorDaVez;
 
 	}
 
@@ -877,10 +883,7 @@ public class ControllerTabuleiro extends Observable {
 		for (Carta c : getDeck().getLstCartas()) {
 
 			if (!c.isCoringa()) {
-				if (!itJogador.hasNext()) {
-					itJogador = getLstJogadores().iterator();
-				}
-				itJogador.next().addCarta(c);
+				proxJogador().addCarta(c);
 			}
 		}
 		itJogador = getLstJogadores().iterator();

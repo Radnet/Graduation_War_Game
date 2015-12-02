@@ -10,6 +10,9 @@ public class Objetivo_9 extends Objetivo{
 		this.descricao = "Destruir todos os exércitos " + exercitoAlvo.getNome() + "s";
 	}
 	
+	public Objetivo_9(){
+		
+	}
 	
 	public boolean Check(ArrayList<Continente> lstContinentes, Exercito e){
 		
