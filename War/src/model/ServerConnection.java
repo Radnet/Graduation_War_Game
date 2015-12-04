@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.io.*;
 import java.util.*;
 
+import com.cedarsoftware.util.io.JsonReader;
 import com.cedarsoftware.util.io.JsonWriter;
 
 import controller.ControllerTabuleiro;
@@ -63,6 +64,8 @@ public class ServerConnection {
 	public void SendMessageToServer(ControllerTabuleiro controller)
 	{
 		String json = JsonWriter.objectToJson(controller);
+		ControllerTabuleiro controller2 = (ControllerTabuleiro) JsonReader.jsonToJava(json); 
+		System.out.println(json);
 		servidorStream.println(json);
 	}
 	

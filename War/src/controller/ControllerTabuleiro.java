@@ -738,36 +738,34 @@ public class ControllerTabuleiro extends Observable {
 	// Move para o próximo jogador
 	private Exercito proxJogador() {
 		
-		if(jogadorDaVez == null) {
-			jogadorDaVez = lstJogadores.get(0);
-		}
-
-		// Desmarca quem está ativo na lista de jogadores
-		for (model.Exercito e : controller.getLstJogadores()) {
-			if (e.isAtivo()) {
-				e.setAtivo();
-			}
-		}
-
-		// Move o iterator para o próximo jogador da lista de jogadores
+		Exercito jogadorRetorno = null;
 		
-		for(int i = 0; i < lstJogadores.size(); i ++) {
-			if(lstJogadores.get(i) == jogadorDaVez) {
-				if(i < lstJogadores.size()-1) {
-					jogadorDaVez =  lstJogadores.get(i+1);
-				} else {
-					jogadorDaVez = lstJogadores.get(0);
-				}				
+		if(jogadorDaVez == null) {
+			jogadorRetorno = lstJogadores.get(0);
+			jogadorRetorno.setAtivo();			
+		} else {		
+			for(int i = 0; i < getLstJogadores().size() ; i++) {
+				if(getLstJogadores().get(i).isAtivo()) {
+					getLstJogadores().get(i).setAtivo();
+					if(i < getLstJogadores().size()-1) {
+						jogadorRetorno = getLstJogadores().get(i+1);
+						jogadorRetorno.setAtivo();
+						break;
+					} else {
+						jogadorRetorno = getLstJogadores().get(0);
+						jogadorRetorno.setAtivo();
+						break;
+					}
+				}
 			}
 		}
+		
+		setJogadorDaVez();		
 
-		// Marca como o jogador ativo
-		jogadorDaVez.setAtivo();
-		setJogadorDaVez();
-		// setMensagem("Vez do Jogador " + jogadorDaVez.getNome());
+		setMensagem("Vez do Jogador " + jogadorDaVez.getNome());
 		notificaMudancas();
 		
-		return jogadorDaVez;
+		return jogadorRetorno;
 
 	}
 
@@ -883,10 +881,10 @@ public class ControllerTabuleiro extends Observable {
 		for (Carta c : getDeck().getLstCartas()) {
 
 			if (!c.isCoringa()) {
-				proxJogador().addCarta(c);
+				jogadorDaVez.addCarta(c);
+				proxJogador();
 			}
 		}
-		itJogador = getLstJogadores().iterator();
 	}
 
 	// Distribui os exércitos sob os territorios de acordo com o deck de cartas de cada jogador.

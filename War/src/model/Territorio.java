@@ -35,6 +35,7 @@ public class Territorio {
 	JLabel lblNumExercitos = new JLabel();
 	
 	public Territorio() {
+		System.out.println("Construtor default territorio");
 	}
 
 	public void addSoldado(Soldado s){

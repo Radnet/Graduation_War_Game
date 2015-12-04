@@ -101,7 +101,7 @@ public class Configuracao extends JFrame {
 				// Se já existem mais de 2 jogadores no tabuleiro, e o exército está selecionado, inicia o jogo
 				if(ControllerTabuleiro.getInstance().tabuleiroPronto()){
 					// Esconde a janela de configuração do jogo.					
-					System.out.println("Você escolheu o exército" + ControllerTabuleiro.getExercitoJogador());
+					//System.out.println("Você escolheu o exército" + ControllerTabuleiro.getExercitoJogador());
 					
 					ControllerTabuleiro.getInstance().preparaTabuleiro();
 					Tabuleiro.getInstance();
