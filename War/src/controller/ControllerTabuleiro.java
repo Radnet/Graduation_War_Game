@@ -2,8 +2,7 @@ package controller;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.UnknownHostException;
+import java.io.Serializable;
 import java.util.*;
 
 import model.*;
@@ -12,15 +11,15 @@ import model.*;
  * @author Pedro
  *
  */
-public class ControllerTabuleiro extends Observable {
+public class ControllerTabuleiro extends Observable implements Serializable {
 
 	private static ControllerTabuleiro controller;
 	private List<model.Exercito> lstJogadores = new ArrayList<model.Exercito>();
 
 	private List<Jogada> lstJogadas              = new ArrayList<Jogada>();
 	private ArrayList<Continente> lstContinentes = new ArrayList<Continente>();
-	private Iterator<model.Exercito> itJogador   = getLstJogadores().iterator();
-	private Iterator<Jogada> itJogada            = getLstJogadas().iterator();
+	private transient Iterator<model.Exercito> itJogador   = getLstJogadores().iterator();
+	private transient Iterator<Jogada> itJogada            = getLstJogadas().iterator();
 
 	private ArrayList<Dado> lstDadosAtaque       = new ArrayList<Dado>();
 	private ArrayList<Dado> lstDadosDefesa       = new ArrayList<Dado>();
@@ -1234,7 +1233,12 @@ public class ControllerTabuleiro extends Observable {
 			}
 		}
 		
-		ServerConnection.GetInstance().SendMessageToServer(controller.getInstance());
+		try {
+			ServerConnection.GetInstance().SendMessageToServer(controller.getInstance());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		setChanged();
 		notifyObservers();

@@ -1,44 +1,48 @@
 package model;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.Scanner;
-
-import com.cedarsoftware.util.io.JsonReader;
-
 import controller.ControllerTabuleiro;
 
 public class InputScanner implements Runnable {
 
-	Socket servidor;
+	Socket 						servidor;
+	static ObjectInputStream 	ois;
 	
-	public InputScanner(Socket servidor)
+	public InputScanner(Socket servidor) throws IOException
 	{
 		this.servidor = servidor;
+		
 	}
 	
 	@Override
 	public void run() {
 		try
 		{
-			Scanner in_serv = new Scanner(servidor.getInputStream());
+			ois = new ObjectInputStream(servidor.getInputStream());
 			
-			while (in_serv.hasNextLine()) 
+			while (true) 
 			{
-				ControllerTabuleiro controllerFromServer = (ControllerTabuleiro) JsonReader.jsonToJava(in_serv.nextLine());
+				//Get the controller received from server ans store at a local variable.
+				ControllerTabuleiro controllerFromServer = (ControllerTabuleiro) ois.readObject();
 				
-				// Set the controller received from server as the new controller without lost the "meuExercito" propertie
+				// Set a local variable as local controller, to save some properties
 				ControllerTabuleiro controllerLocal = ControllerTabuleiro.getInstance();
 				
+				// substitute local controller with the one received from server.
+				ControllerTabuleiro.setController(controllerFromServer);
+				
+				// Recover meuExercito properties
 				Exercito meuExercito = controllerLocal.getMeuExercito();
 				if(meuExercito != null) {
 					controllerFromServer.setMeuExercito(meuExercito.getNome(), (Color) meuExercito.getCor());
 				}
-				
-				ControllerTabuleiro.setController(controllerFromServer);
+				ois.close();
 			}
 			
-			in_serv.close();
+			
 		}
 		catch(Exception e)
 		{

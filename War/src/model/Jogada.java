@@ -1,6 +1,8 @@
 package model;
 
-public class Jogada {
+import java.io.Serializable;
+
+public class Jogada implements Serializable {
 
 	private String nome;
 	private boolean ativo;

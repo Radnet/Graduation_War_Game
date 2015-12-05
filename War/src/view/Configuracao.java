@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -20,7 +21,7 @@ import controller.ControllerTabuleiro;
 import model.ServerConnection;
 
 @SuppressWarnings("serial")
-public class Configuracao extends JFrame {
+public class Configuracao extends JFrame implements Serializable {
 	private static Configuracao configuracao;
 	private ArrayList<view.Exercito> lstExercitos = new ArrayList<view.Exercito>();
 	private ArrayList<view.Exercito> lstJogadores = new ArrayList<Exercito>();
@@ -217,7 +218,12 @@ public class Configuracao extends JFrame {
 						ControllerTabuleiro.setMeuExercito(ex.getNome(), ex.getCor());
 						ControllerTabuleiro.getInstance().setJogador(ex.getNome(), ex.getCor());
 						ex.setSelecionado();
-						ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
+						try {
+							ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						repaint();
 						System.out.println("Exército selecionado: " + ControllerTabuleiro.getExercitoJogador());
 					}

@@ -1,7 +1,8 @@
 package model;
 
+import java.io.Serializable;
 
-public class Ponto {
+public class Ponto implements Serializable {
 	private double x;
 	private double y;
 	

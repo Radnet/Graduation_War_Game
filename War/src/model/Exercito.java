@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import controller.ControllerTabuleiro;
 
-public class Exercito {
+public class Exercito implements Serializable {
 
 	private String nome;
 	private Object cor;
