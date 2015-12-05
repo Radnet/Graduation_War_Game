@@ -16,6 +16,14 @@ import javax.swing.SwingConstants;
  */
 public class Territorio {
 	
+	public void setShape(GeneralPath shape) {
+		this.shape = shape;
+	}
+	
+	public GeneralPath GetShapeGeneralPath() {
+		return this.shape;
+	}
+
 	private GeneralPath shape;
 	private String nome;
 	private String nomeCarta;	
@@ -35,7 +43,7 @@ public class Territorio {
 	JLabel lblNumExercitos = new JLabel();
 	
 	public Territorio() {
-		System.out.println("Construtor default territorio");
+		//System.out.println("Construtor default territorio");
 	}
 
 	public void addSoldado(Soldado s){

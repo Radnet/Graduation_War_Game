@@ -63,8 +63,16 @@ public class ServerConnection {
 	
 	public void SendMessageToServer(ControllerTabuleiro controller)
 	{
-		String json = JsonWriter.objectToJson(controller);
-		ControllerTabuleiro controller2 = (ControllerTabuleiro) JsonReader.jsonToJava(json); 
+		GameState gameState = new GameState();
+		
+		gameState.lstJogadores   = controller.getLstJogadores();
+		gameState.deck           = controller.getDeck();
+		gameState.deckObjetivos  = controller.getDeckObjetivos();
+		gameState.jogadorDaVez   = controller.getJogadorDaVez();
+		gameState.lstContinentes = controller.getLstContinentes();
+		gameState.lstJogadas     = controller.getLstJogadas();
+		
+		String json = JsonWriter.objectToJson(gameState);
 		System.out.println(json);
 		servidorStream.println(json);
 	}

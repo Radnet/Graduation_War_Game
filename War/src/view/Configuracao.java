@@ -221,7 +221,7 @@ public class Configuracao extends JFrame {
 						repaint();
 						System.out.println("Exército selecionado: " + ControllerTabuleiro.getExercitoJogador());
 					}
-					
+					ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 				}
 			});
 			
