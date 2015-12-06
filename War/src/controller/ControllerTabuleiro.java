@@ -767,7 +767,6 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 		setMensagem("Vez do Jogador " + jogadorDaVez.getNome());
 		notificaMudancas();
-		ServerConnection.GetInstance().SendMessageToServer(controller.getInstance());
 		return jogadorRetorno;
 
 	}
@@ -894,7 +893,9 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	private void distribuirExercitosInicio() {
 		for (model.Exercito e : getLstJogadores()) {
 			for (Carta c : e.getLstCartas()) {
-				c.getTerritorio().addSoldado(new Soldado(e));
+				if(c.getTerritorio().getLstSoldados().size() < 1) {
+					c.getTerritorio().addSoldado(new Soldado(e));
+				}
 			}
 		}
 		// Limpa a lista de cartas depois da distribuição
@@ -964,6 +965,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			mensagem += " (botão esquerdo seleciona origem, botão direito move soldados)";
 		}
 		setMensagem(mensagem);
+		ServerConnection.GetInstance().SendMessageToServer(controller.getInstance());
 
 	}
 
