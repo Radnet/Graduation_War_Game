@@ -25,21 +25,19 @@ public class InputScanner implements Runnable {
 			
 			while (true) 
 			{
-				//Get the controller received from server ans store at a local variable.
-				ControllerTabuleiro controllerFromServer = (ControllerTabuleiro) ois.readObject();
+
+				GameState gameStateFromServer = (GameState) JsonReader.jsonToJava(in_serv.nextLine());
 				
 				// Set a local variable as local controller, to save some properties
 				ControllerTabuleiro controllerLocal = ControllerTabuleiro.getInstance();
-				
-				// substitute local controller with the one received from server.
-				ControllerTabuleiro.setController(controllerFromServer);
-				
-				// Recover meuExercito properties
-				Exercito meuExercito = controllerLocal.getMeuExercito();
-				if(meuExercito != null) {
-					controllerFromServer.setMeuExercito(meuExercito.getNome(), (Color) meuExercito.getCor());
-				}
-				ois.close();
+		
+				controllerLocal.setLstJogadores(gameStateFromServer.lstJogadores);
+				controllerLocal.setDeck(gameStateFromServer.deck);
+				controllerLocal.setDeckObjetivos(gameStateFromServer.deckObjetivos);
+				controllerLocal.setJogadorDaVez(gameStateFromServer.jogadorDaVez);
+				controllerLocal.setLstContinentes(gameStateFromServer.lstContinentes);
+				controllerLocal.setLstJogadas(gameStateFromServer.lstJogadas);
+
 			}
 			
 			

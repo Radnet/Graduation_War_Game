@@ -52,10 +52,22 @@ public class ServerConnection {
 
 		return serverConnection;
 	}
+	
+	public void SendMessageToServer(ControllerTabuleiro controller)
+	{
+		GameState gameState = new GameState();
+		
+		gameState.lstJogadores   = controller.getLstJogadores();
+		gameState.deck           = controller.getDeck();
+		gameState.deckObjetivos  = controller.getDeckObjetivos();
+		gameState.jogadorDaVez   = controller.getJogadorDaVez();
+		gameState.lstContinentes = controller.getLstContinentes();
+		gameState.lstJogadas     = controller.getLstJogadas();
+		
+		String json = JsonWriter.objectToJson(gameState);
+		System.out.println(json);
+		servidorStream.println(json);
 
-	public void SendMessageToServer(ControllerTabuleiro controller) throws Exception {
-		servidorStream.writeObject(controller);
-		//servidorStream.close();
 	}
 
 	public void CloseConnection() {

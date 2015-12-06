@@ -13,6 +13,10 @@ import model.*;
  */
 public class ControllerTabuleiro extends Observable implements Serializable {
 
+	public void setLstJogadores(List<model.Exercito> lstJogadores) {
+		this.lstJogadores = lstJogadores;
+	}
+
 	private static ControllerTabuleiro controller;
 	private List<model.Exercito> lstJogadores = new ArrayList<model.Exercito>();
 
@@ -763,7 +767,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 		setMensagem("Vez do Jogador " + jogadorDaVez.getNome());
 		notificaMudancas();
-		
+		ServerConnection.GetInstance().SendMessageToServer(controller.getInstance());
 		return jogadorRetorno;
 
 	}
@@ -1233,15 +1237,111 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			}
 		}
 		
-		try {
-			ServerConnection.GetInstance().SendMessageToServer(controller.getInstance());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		setChanged();
 		notifyObservers();
+	}
+
+	public Iterator<model.Exercito> getItJogador() {
+		return itJogador;
+	}
+
+	public void setItJogador(Iterator<model.Exercito> itJogador) {
+		this.itJogador = itJogador;
+	}
+
+	public Iterator<Jogada> getItJogada() {
+		return itJogada;
+	}
+
+	public void setItJogada(Iterator<Jogada> itJogada) {
+		this.itJogada = itJogada;
+	}
+
+	public ArrayList<Dado> getLstDadosAtaque() {
+		return lstDadosAtaque;
+	}
+
+	public void setLstDadosAtaque(ArrayList<Dado> lstDadosAtaque) {
+		this.lstDadosAtaque = lstDadosAtaque;
+	}
+
+	public ArrayList<Dado> getLstDadosDefesa() {
+		return lstDadosDefesa;
+	}
+
+	public void setLstDadosDefesa(ArrayList<Dado> lstDadosDefesa) {
+		this.lstDadosDefesa = lstDadosDefesa;
+	}
+
+	public boolean isConquistouTerritorio() {
+		return conquistouTerritorio;
+	}
+
+	public void setConquistouTerritorio(boolean conquistouTerritorio) {
+		this.conquistouTerritorio = conquistouTerritorio;
+	}
+
+	public DeckObjetivos getDeckObjetivos() {
+		return deckObjetivos;
+	}
+
+	public void setDeckObjetivos(DeckObjetivos deckObjetivos) {
+		this.deckObjetivos = deckObjetivos;
+	}
+
+	public static ControllerTabuleiro getController() {
+		return controller;
+	}
+
+	public void setLstJogadas(List<Jogada> lstJogadas) {
+		this.lstJogadas = lstJogadas;
+	}
+
+	public void setLstContinentes(ArrayList<Continente> lstContinentes) {
+		
+		for(Continente cont : this.lstContinentes)
+		{
+			for(Continente contServer : lstContinentes)
+			{
+				if(contServer.getNome().equals(cont.getNome()))
+				{
+					for(Territorio terri : cont.getLstTerritorios())
+					{
+						for(Territorio terriServer : contServer.getLstTerritorios())
+						{
+							if(terri.getNome().equals(terriServer.getNome()))
+							{
+								terriServer.setShape(terri.GetShapeGeneralPath());
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+		this.lstContinentes = lstContinentes;
+	}
+
+	public void setDeck(Deck deck) {
+		this.deck = deck;
+	}
+
+	public void setQtdTroca(int qtdTroca) {
+		this.qtdTroca = qtdTroca;
+	}
+
+	public void setJogadorDaVez(Exercito jogadorDaVez) {
+		this.jogadorDaVez = jogadorDaVez;
+	}
+
+	public void setVencedor(Exercito vencedor) {
+		this.vencedor = vencedor;
+	}
+
+	public static void setMeuExercito(Exercito meuExercito) {
+		ControllerTabuleiro.meuExercito = meuExercito;
 	}
 
 	// Determina um jogador como vencedor
