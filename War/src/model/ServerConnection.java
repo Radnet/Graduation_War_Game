@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.io.*;
 import java.util.*;
 
+import com.cedarsoftware.util.io.JsonWriter;
+
 import controller.ControllerTabuleiro;
 
 public class ServerConnection {
@@ -16,7 +18,7 @@ public class ServerConnection {
 	private static String ip;
 	private static String port;
 	private static Socket servidorSocket;
-	private static ObjectOutputStream servidorStream;
+	private static PrintStream servidorStream;
 
 	private ServerConnection() {
 		try {
@@ -33,7 +35,7 @@ public class ServerConnection {
 			servidorSocket = new Socket(ip, Integer.parseInt(port));
 
 			// Setting message stream
-			servidorStream = new ObjectOutputStream(servidorSocket.getOutputStream());
+			servidorStream = new PrintStream(servidorSocket.getOutputStream());
 
 			// Starting listener for server incoming messages
 			StartServerListener();
