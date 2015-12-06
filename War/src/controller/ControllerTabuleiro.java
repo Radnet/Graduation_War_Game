@@ -934,7 +934,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	private Jogada proxJogada() {
 		
 		// Se não tem proxima jogada
-		if(getLstJogadas().get(lstJogadas.indexOf(jogadaAtual)+1) == null) {
+		if(lstJogadas.indexOf(jogadaAtual) >= lstJogadas.size()-1) {
 			jogadaAtual.setAtivo();
 			jogadaAtual = getLstJogadas().get(0);
 			
@@ -954,12 +954,14 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			calculaSoldados();
 		} else {
 			jogadaAtual = getLstJogadas().get(getLstJogadas().indexOf(jogadaAtual)+1);
+			jogadaAtual.setAtivo();
 		}
+		
 		
 		zeraSoldadosImigrantes();
 		
 		String mensagem = "Vez do Jogador " + jogadorDaVez.getNome() + " " + descobreJogadas().getNome();
-		if (descobreJogadas().getNome() == "Remanejar") {
+		if (descobreJogadas().getNome().equals("Remanejar")) {
 			mensagem += " (botão esquerdo seleciona origem, botão direito move soldados)";
 		}
 		setMensagem(mensagem);

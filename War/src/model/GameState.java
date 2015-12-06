@@ -15,15 +15,15 @@ public class GameState {
 	public ArrayList<Dado>          lstDadosAtaque       = new ArrayList<Dado>();
 	public ArrayList<Dado>          lstDadosDefesa       = new ArrayList<Dado>();
 	
-	public Deck                     deck                  ;                       // 
-	public Territorio               territorioOrigem      ;     // nao comunicar
-	public Territorio               territorioDestino     ;    // nao comunicar
-	public String                   mensagem                ;                 // 
-	public int                      qtdTroca               ;
+	public Deck                     deck                  ; 
+	public Territorio               territorioOrigem      ;
+	public Territorio               territorioDestino     ;
+	public String                   mensagem              ; 
+	public int                      qtdTroca              ;
 	public boolean                  conquistouTerritorio  ;
-	public DeckObjetivos            deckObjetivos          ;
+	public DeckObjetivos            deckObjetivos         ;
 //	
-	public Exercito                 jogadorDaVez            ;
-	public Jogada					jogadaAtual				;
-	public Exercito                  vencedor                  ;
+	public Exercito                 jogadorDaVez          ;
+	public Jogada					jogadaAtual			  ;
+	public Exercito                  vencedor             ;
 }
