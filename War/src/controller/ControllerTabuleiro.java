@@ -937,11 +937,11 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		if(lstJogadas.indexOf(jogadaAtual) >= lstJogadas.size()-1) {
 			jogadaAtual.setAtivo();
 			jogadaAtual = getLstJogadas().get(0);
+			jogadaAtual.setAtivo();
 			
 			if (conquistouTerritorio) {
 				moveEntreListas(deck.getLstCartas(), jogadorDaVez.getLstCartas(), deck.getLstCartas().get(0));
 				setMensagem(jogadorDaVez.getLstCartas().get(jogadorDaVez.getLstCartas().size() - 1).getImagem());
-
 			}
 			
 			conquistouTerritorio = false;
@@ -953,9 +953,11 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			
 			calculaSoldados();
 		} else {
+			jogadaAtual.setAtivo();
 			jogadaAtual = getLstJogadas().get(getLstJogadas().indexOf(jogadaAtual)+1);
 			jogadaAtual.setAtivo();
 		}
+		
 		
 		
 		zeraSoldadosImigrantes();
