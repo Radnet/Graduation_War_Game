@@ -1,41 +1,45 @@
 package model;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.Scanner;
-
-import com.cedarsoftware.util.io.JsonReader;
-
 import controller.ControllerTabuleiro;
 
 public class InputScanner implements Runnable {
 
-	Socket servidor;
+	Socket 						servidor;
+	static ObjectInputStream 	ois;
 	
-	public InputScanner(Socket servidor)
+	public InputScanner(Socket servidor) throws IOException
 	{
 		this.servidor = servidor;
+		
 	}
 	
 	@Override
 	public void run() {
 		try
 		{
-			Scanner in_serv = new Scanner(servidor.getInputStream());
+			ois = new ObjectInputStream(servidor.getInputStream());
 			
-			while (in_serv.hasNextLine()) 
+			while (true) 
 			{
+
 				GameState gameStateFromServer = (GameState) JsonReader.jsonToJava(in_serv.nextLine());
 				
-				// Set the controller received from server as the new controller without lost the "meuExercito" propertie
+				// Set a local variable as local controller, to save some properties
 				ControllerTabuleiro controllerLocal = ControllerTabuleiro.getInstance();
-				
+		
 				controllerLocal.setLstJogadores(gameStateFromServer.lstJogadores);
 				controllerLocal.setDeck(gameStateFromServer.deck);
 				controllerLocal.setDeckObjetivos(gameStateFromServer.deckObjetivos);
 				controllerLocal.setJogadorDaVez(gameStateFromServer.jogadorDaVez);
 				controllerLocal.setLstContinentes(gameStateFromServer.lstContinentes);
 				controllerLocal.setLstJogadas(gameStateFromServer.lstJogadas);
+<<<<<<< HEAD
+
+=======
 				
 				controllerLocal.setItJogador(gameStateFromServer.itJogador                         );
 				controllerLocal.setItJogada(gameStateFromServer.itJogada                           );
@@ -49,9 +53,10 @@ public class InputScanner implements Runnable {
 				controllerLocal.setVencedor(gameStateFromServer.vencedor                           );
 				                                                                         
 				 
+>>>>>>> 444851b
 			}
 			
-			in_serv.close();
+			
 		}
 		catch(Exception e)
 		{

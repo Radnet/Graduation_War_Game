@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -14,7 +15,7 @@ import javax.swing.SwingConstants;
  * @author Pedro
  *
  */
-public class Territorio {
+public class Territorio implements Serializable {
 	
 	public void setShape(GeneralPath shape) {
 		this.shape = shape;

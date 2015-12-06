@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Observable;
 import java.util.Random;
 
-public class Dado extends Observable implements Comparable<Dado> {
+public class Dado extends Observable implements Comparable<Dado>, Serializable {
 
 	private int numero;
 	private char tipo;

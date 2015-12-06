@@ -1,5 +1,6 @@
 package model;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  * @author Pedro
  *
  */
-public class Continente {
+public class Continente implements Serializable {
 	
 	private ArrayList<Territorio> lstTerritorio = new ArrayList<Territorio>();
 	private String nome;

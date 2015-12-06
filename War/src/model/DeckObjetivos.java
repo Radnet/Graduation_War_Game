@@ -1,12 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import controller.ControllerTabuleiro;
 
 
-public class DeckObjetivos {
+public class DeckObjetivos implements Serializable {
 		
 	private static DeckObjetivos deckObjetivos;
 	private ArrayList<Objetivo> lstObjetivos = new ArrayList<Objetivo>();
