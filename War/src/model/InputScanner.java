@@ -41,8 +41,7 @@ public class InputScanner implements Runnable {
 				controllerLocal.setLstContinentes(gameStateFromServer.lstContinentes);
 				controllerLocal.setLstJogadas(gameStateFromServer.lstJogadas);
 				
-				controllerLocal.setItJogador(gameStateFromServer.itJogador                         );
-				controllerLocal.setItJogada(gameStateFromServer.itJogada                           );
+				controllerLocal.setJogadaAtual(gameStateFromServer.jogadaAtual                      );
 				controllerLocal.setLstDadosAtaque(gameStateFromServer.lstDadosAtaque               );
 				controllerLocal.setLstDadosDefesa(gameStateFromServer.lstDadosDefesa               );
 				//controllerLocal.setTerritorioOrigem(gameStateFromServer.territorioOrigem           );
@@ -50,7 +49,7 @@ public class InputScanner implements Runnable {
 				//controllerLocal.setMensagem(gameStateFromServer.mensagem                           );
 				controllerLocal.setQtdTroca(gameStateFromServer.qtdTroca                           );
 				controllerLocal.setConquistouTerritorio(gameStateFromServer.conquistouTerritorio   );
-				controllerLocal.setVencedor(gameStateFromServer.vencedor                           );
+				controllerLocal.setVencedor(gameStateFromServer.vencedor                          );
 				                                                                         
 				 
 			}

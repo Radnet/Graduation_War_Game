@@ -15,14 +15,14 @@ public class Objetivo_5 extends Objetivo {
 	public boolean Check(ArrayList<Continente> lstContinentes, Exercito e) {
 		
 		for (Continente c : lstContinentes) {
-			if (c.getNome() == "Oceania") {
+			if (c.getNome().equals("Oceania")) {
 				for (Territorio t : c.getLstTerritorios()) {
 					if (t.getLstSoldados().get(0).getExercito() != e) {
 						return false;
 					}
 				}
 			}
-			if (c.getNome() == "América do norte"){
+			if (c.getNome().equals("America do norte")){
 				for(Territorio t: c.getLstTerritorios()){
 					if(t.getLstSoldados().get(0).getExercito() != e){
 						return false;

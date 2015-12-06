@@ -19,7 +19,7 @@ public class Objetivo_7 extends Objetivo {
 		int an = 0;
 		
 		for (Continente c : lstContinentes) {
-			if (c.getNome() == "Oceania") {
+			if (c.getNome().equals("Oceania")) {
 				for (Territorio t : c.getLstTerritorios()) {
 					if (t.getLstSoldados().get(0).getExercito() == e) {
 						oc ++;
@@ -27,7 +27,7 @@ public class Objetivo_7 extends Objetivo {
 				}
 			}
 			
-			if (c.getNome() == "Europa"){
+			if (c.getNome().equals("Europa")){
 				for(Territorio t: c.getLstTerritorios()){
 					if(t.getLstSoldados().get(0).getExercito() != e){
 						return false;
@@ -35,7 +35,7 @@ public class Objetivo_7 extends Objetivo {
 				}
 			}
 			
-			if (c.getNome() == "África") {
+			if (c.getNome().equals("Africa")) {
 				for (Territorio t : c.getLstTerritorios()) {
 					if (t.getLstSoldados().get(0).getExercito() == e) {
 						af ++;
@@ -43,7 +43,7 @@ public class Objetivo_7 extends Objetivo {
 				}
 			}
 			
-			if (c.getNome() == "América do sul") {
+			if (c.getNome().equals("America do sul")) {
 				for (Territorio t : c.getLstTerritorios()) {
 					if (t.getLstSoldados().get(0).getExercito() != e) {
 						return false;
@@ -51,7 +51,7 @@ public class Objetivo_7 extends Objetivo {
 				}
 			}
 			
-			if (c.getNome() == "Ásia") {
+			if (c.getNome().equals("Asia")) {
 				for (Territorio t : c.getLstTerritorios()) {
 					if (t.getLstSoldados().get(0).getExercito() == e) {
 						as ++;
@@ -59,7 +59,7 @@ public class Objetivo_7 extends Objetivo {
 				}
 			}
 			
-			if (c.getNome() == "América do norte") {
+			if (c.getNome().equals("America do norte")) {
 				for (Territorio t : c.getLstTerritorios()) {
 					if (t.getLstSoldados().get(0).getExercito() == e) {
 						an ++;

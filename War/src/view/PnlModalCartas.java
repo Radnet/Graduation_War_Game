@@ -217,11 +217,12 @@ public class PnlModalCartas extends JPanel implements Observer {
 		pnlCartasTroca.setOpaque(false);
 		
 		add(pnlCartasTroca);
+		
 	}
 	
-	private void atualizaCartaObjetivo() {
-		if(controller.getJogadorDaVez().getObjetivo() != null) {
-			lblCartaObjetivo.setToolTipText(controller.getJogadorDaVez().getObjetivo().getDescricao());
+	public void atualizaCartaObjetivo() {
+		if(controller.getMeuExercito().getObjetivo() != null) {
+			lblCartaObjetivo.setToolTipText(controller.getMeuExercito().getObjetivo().getDescricao());
 		}
 	}
 

@@ -48,6 +48,7 @@ public class PnlTabelaTroca extends JPanel implements Observer{
 		setSize(imgTabelaTroca.getIconWidth(), lblTabelaTrocaTitulo.getHeight()+lblTabelaTroca.getHeight()+lblQtdProxTroca.getHeight());
 		setLocation(5, 500);
 		setOpaque(false);
+		atualizaLblQtdProximaTroca();
 	}
 	
 	public static PnlTabelaTroca getInstance() {

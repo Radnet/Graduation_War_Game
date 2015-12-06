@@ -69,8 +69,7 @@ public class ServerConnection {
 		
 		
 		
-		gameState.itJogador            = controller.getItJogador();
-		gameState.itJogada             = controller.getItJogada();  
+		gameState.jogadaAtual          = controller.getJogadaAtual();  
 		gameState.lstDadosAtaque       = controller.getLstDadosAtaque();
 		gameState.lstDadosDefesa       = controller.getLstDadosDefesa();  
 		gameState.territorioOrigem     = controller.getTerritorioOrigem();

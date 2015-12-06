@@ -50,6 +50,7 @@ public class Tabuleiro extends JFrame implements Observer {
 		carregaMapa();
 		carregaBarraInferior();
 		carregaBgTabuleiro();
+		repaint();
 	}
 
 	private void carregaBonusContinente() {
@@ -108,7 +109,7 @@ public class Tabuleiro extends JFrame implements Observer {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				if(controller.getJogadorDaVez() != controller.getMeuExercito()) {
+				if(!controller.getJogadorDaVez().equals(controller.getMeuExercito())) {
 					pnlModalCartas.btnEfetuarTroca.setEnabled(false);
 				} else {
 					pnlModalCartas.btnEfetuarTroca.setEnabled(true);
@@ -333,7 +334,7 @@ public class Tabuleiro extends JFrame implements Observer {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				if(controller.getJogadaAtual().getNome() == "Distribuir" && controller.getJogadorDaVez().getLstCartas().size() > 4 ) {
+				if(controller.getJogadaAtual().getNome().equals("Distribuir") && controller.getJogadorDaVez().getLstCartas().size() > 4 ) {
 					
 				} else {
 					pnlModalCartas.setVisible(false);
@@ -360,7 +361,7 @@ public class Tabuleiro extends JFrame implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		repaint();
-		if(controller.getJogadaAtual() != null && controller.getJogadorDaVez() != null && controller.getJogadorDaVez().getLstCartas().size() > 4 && controller.getJogadaAtual().getNome()=="Distribuir") {
+		if(controller.getJogadaAtual() != null && controller.getJogadorDaVez() != null && controller.getJogadorDaVez().getLstCartas().size() > 4) {
 			pnlModalCartas.setVisible(true);
 		}
 		

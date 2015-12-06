@@ -11,8 +11,6 @@ public class GameState {
 
 	public List<Jogada>             lstJogadas           = new ArrayList<Jogada>();
 	public ArrayList<Continente>    lstContinentes       = new ArrayList<Continente>();
-	public Iterator<model.Exercito> itJogador            ; 
-	public Iterator<Jogada>         itJogada             ; 
 
 	public ArrayList<Dado>          lstDadosAtaque       = new ArrayList<Dado>();
 	public ArrayList<Dado>          lstDadosDefesa       = new ArrayList<Dado>();
@@ -26,5 +24,6 @@ public class GameState {
 	public DeckObjetivos            deckObjetivos          ;
 //	
 	public Exercito                 jogadorDaVez            ;
+	public Jogada					jogadaAtual				;
 	public Exercito                  vencedor                  ;
 }

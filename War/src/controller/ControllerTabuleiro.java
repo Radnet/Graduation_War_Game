@@ -22,8 +22,6 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 	private List<Jogada> lstJogadas              = new ArrayList<Jogada>();
 	private ArrayList<Continente> lstContinentes = new ArrayList<Continente>();
-	private transient Iterator<model.Exercito> itJogador   = getLstJogadores().iterator();
-	private transient Iterator<Jogada> itJogada            = getLstJogadas().iterator();
 
 	private ArrayList<Dado> lstDadosAtaque       = new ArrayList<Dado>();
 	private ArrayList<Dado> lstDadosDefesa       = new ArrayList<Dado>();
@@ -37,6 +35,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	private DeckObjetivos deckObjetivos;
 	
 	private Exercito jogadorDaVez;
+	private Jogada jogadaAtual;
 	private Exercito vencedor;
 	private static Exercito meuExercito = null;
 
@@ -46,6 +45,9 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		lstJogadas.add(new Jogada("Distribuir"));
 		lstJogadas.add(new Jogada("Atacar"));
 		lstJogadas.add(new Jogada("Remanejar"));
+		lstJogadas.get(0).setAtivo();
+		jogadaAtual = lstJogadas.get(0);
+		qtdTroca = 4;
 	}
 
 	// bloco de inicialização dos continentes
@@ -58,10 +60,10 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		Color corEuropa = new Color(43, 56, 143);
 		Color corOceania = new Color(38, 169, 224);
 
-		lstContinentes.add(new Continente("América do norte", corAmericaNorte, 5));
-		lstContinentes.add(new Continente("América do sul", corAmericaSul, 2));
-		lstContinentes.add(new Continente("África", corAfrica, 3));
-		lstContinentes.add(new Continente("Ásia", corAsia, 7));
+		lstContinentes.add(new Continente("America do norte", corAmericaNorte, 5));
+		lstContinentes.add(new Continente("America do sul", corAmericaSul, 2));
+		lstContinentes.add(new Continente("Africa", corAfrica, 3));
+		lstContinentes.add(new Continente("Asia", corAsia, 7));
 		lstContinentes.add(new Continente("Europa", corEuropa, 5));
 		lstContinentes.add(new Continente("Oceania", corOceania, 2));
 
@@ -608,7 +610,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 		// Adiciona os territorios aos continentes
 		for (Continente c : lstContinentes) {
-			if (c.getNome() == "América do norte") {
+			if (c.getNome() == "America do norte") {
 				c.getLstTerritorios().add(Alasca);
 				c.getLstTerritorios().add(Calgary);
 				c.getLstTerritorios().add(Groelandia);
@@ -618,19 +620,19 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				c.getLstTerritorios().add(Texas);
 				c.getLstTerritorios().add(Nova_York);
 				c.getLstTerritorios().add(Mexico);
-			} else if (c.getNome() == "América do sul") {
+			} else if (c.getNome() == "America do sul") {
 				c.getLstTerritorios().add(Venezuela);
 				c.getLstTerritorios().add(Peru);
 				c.getLstTerritorios().add(Brasil);
 				c.getLstTerritorios().add(Argentina);
-			} else if (c.getNome() == "África") {
+			} else if (c.getNome() == "Africa") {
 				c.getLstTerritorios().add(Africa_do_Sul);
 				c.getLstTerritorios().add(Somalia);
 				c.getLstTerritorios().add(Angola);
 				c.getLstTerritorios().add(Egito);
 				c.getLstTerritorios().add(Nigeria);
 				c.getLstTerritorios().add(Argelia);
-			} else if (c.getNome() == "Ásia") {
+			} else if (c.getNome() == "Asia") {
 				c.getLstTerritorios().add(Tailandia);
 				c.getLstTerritorios().add(Bangladesh);
 				c.getLstTerritorios().add(India);
@@ -741,24 +743,19 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	// Move para o próximo jogador
 	private Exercito proxJogador() {
 		
-		Exercito jogadorRetorno = null;
-		
-		if(jogadorDaVez == null) {
-			jogadorRetorno = lstJogadores.get(0);
-			jogadorRetorno.setAtivo();			
-		} else {		
-			for(int i = 0; i < getLstJogadores().size() ; i++) {
-				if(getLstJogadores().get(i).isAtivo()) {
-					getLstJogadores().get(i).setAtivo();
-					if(i < getLstJogadores().size()-1) {
-						jogadorRetorno = getLstJogadores().get(i+1);
-						jogadorRetorno.setAtivo();
-						break;
-					} else {
-						jogadorRetorno = getLstJogadores().get(0);
-						jogadorRetorno.setAtivo();
-						break;
-					}
+		Exercito jogadorRetorno = null;		
+				
+		for(int i = 0; i < getLstJogadores().size() ; i++) {
+			if(getLstJogadores().get(i).isAtivo()) {
+				getLstJogadores().get(i).setAtivo();
+				if(i < getLstJogadores().size()-1) {
+					jogadorRetorno = getLstJogadores().get(i+1);
+					jogadorRetorno.setAtivo();
+					break;
+				} else {
+					jogadorRetorno = getLstJogadores().get(0);
+					jogadorRetorno.setAtivo();
+					break;
 				}
 			}
 		}
@@ -819,15 +816,16 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	// Prepara o tabuleiro
 	public void preparaTabuleiro() {
 
-		if (lstJogadores.size() > 0) {
-			qtdTroca = 4;
+		if (lstJogadores.size() > 0) {			
 			deck = Deck.getInstance();
 			proxJogador();
 			embaralhaLista(deck.getLstCartas());
 			distribuiCartasInicio();
 			distribuiObjetivos();
 			distribuirExercitosInicio();
-			proxJogada();
+			notificaMudancas();
+			ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
+			
 		}
 	}
 
@@ -933,52 +931,57 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	}
 
 	// Muda para a próxima jogada
-	private void proxJogada() {
-		notificaMudancas();
-		for (Jogada j : controller.getLstJogadas()) {
-			if (j.isAtivo()) {
-				j.setAtivo();
-			}
-		}
-
-		if (!itJogada.hasNext()) {
-			itJogada = controller.getLstJogadas().iterator();
+	private Jogada proxJogada() {
+		
+		// Se não tem proxima jogada
+		if(getLstJogadas().get(lstJogadas.indexOf(jogadaAtual)+1) == null) {
+			jogadaAtual.setAtivo();
+			jogadaAtual = getLstJogadas().get(0);
+			
 			if (conquistouTerritorio) {
 				moveEntreListas(deck.getLstCartas(), jogadorDaVez.getLstCartas(), deck.getLstCartas().get(0));
 				setMensagem(jogadorDaVez.getLstCartas().get(jogadorDaVez.getLstCartas().size() - 1).getImagem());
 
 			}
+			
 			conquistouTerritorio = false;
 			proxJogador();
-
-			while (possuiTerritorio(jogadorDaVez.getNome()) == false) {
+			
+			while(!possuiTerritorio(proxJogador())) {
 				proxJogador();
 			}
-
+			
 			calculaSoldados();
+		} else {
+			jogadaAtual = getLstJogadas().get(getLstJogadas().indexOf(jogadaAtual)+1);
 		}
-
-		itJogada.next().setAtivo();
+		
 		zeraSoldadosImigrantes();
+		
 		String mensagem = "Vez do Jogador " + jogadorDaVez.getNome() + " " + descobreJogadas().getNome();
 		if (descobreJogadas().getNome() == "Remanejar") {
 			mensagem += " (botão esquerdo seleciona origem, botão direito move soldados)";
 		}
 		setMensagem(mensagem);
-		ServerConnection.GetInstance().SendMessageToServer(controller.getInstance());
-
+		ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
+		return jogadaAtual;
 	}
 
 	// Define o exército da vez.
 	private void setJogadorDaVez() {
+		
+		if(jogadorDaVez == null) {
+			lstJogadores.get(0).setAtivo();
+		}
+		
 		for (Exercito e : lstJogadores) {
 			if (e.isAtivo()) {
 				jogadorDaVez = e;
 			}
 		}
 	}
-
-	// Retorna o exercito da vez.
+	
+// Retorna o exercito da vez.
 	public Exercito getJogadorDaVez() {
 		return jogadorDaVez;
 	}
@@ -1114,13 +1117,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 	// Retorna a jogada atual
 	public Jogada getJogadaAtual() {
-		Jogada jogada = null;
-		for (Jogada j : getLstJogadas()) {
-			if (j.isAtivo()) {
-				jogada = j;
-			}
-		}
-		return jogada;
+		return this.jogadaAtual;
 	}
 
 	// Seta o território passado como parâmetro como origem de um ataque/remanejamento
@@ -1217,7 +1214,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 	// Tratamento do clique no botão de proxima jogada
 	public void btnProxJogada_click() {
-		if (vencedor == null && meuExercito == jogadorDaVez) {
+		if (vencedor == null && getJogadorDaVez().getCor().equals(meuExercito.getCor())) {
 			setTerritorioDestino(null);
 			setTerritorioOrigem(null);
 			proxJogada();
@@ -1225,15 +1222,17 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	}
 
 	// Notifica as mudanças aos observadores
-	private void notificaMudancas() {
+	public void notificaMudancas() {
 		// Se o objetivo do jogador da vez dor diferente de nulo e o jogo ainda não possuir vencedor
 		if (jogadorDaVez.getObjetivo() != null && vencedor == null) {
 			
+			Exercito alvo = jogadorDaVez.getObjetivo().getExercitoAlvo();
+			
 			// Se o check do objetivo do jogador for igual a true
-			if (jogadorDaVez.getObjetivo().getExercitoAlvo() == null && jogadorDaVez.getObjetivo().Check(lstContinentes, jogadorDaVez)) {
+			if (alvo == null && jogadorDaVez.getObjetivo().Check(lstContinentes, jogadorDaVez)) {
 				setVencedor();
 				telaVencedor();
-			} else if(jogadorDaVez.getObjetivo().getExercitoAlvo() != null && jogadorDaVez.getObjetivo().Check(lstContinentes, jogadorDaVez.getObjetivo().getExercitoAlvo())) {
+			} else if(alvo != null && jogadorDaVez.getObjetivo().Check(lstContinentes, jogadorDaVez.getObjetivo().getExercitoAlvo())) {
 				setVencedor();
 				telaVencedor();
 			}
@@ -1242,22 +1241,6 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 		setChanged();
 		notifyObservers();
-	}
-
-	public Iterator<model.Exercito> getItJogador() {
-		return itJogador;
-	}
-
-	public void setItJogador(Iterator<model.Exercito> itJogador) {
-		this.itJogador = itJogador;
-	}
-
-	public Iterator<Jogada> getItJogada() {
-		return itJogada;
-	}
-
-	public void setItJogada(Iterator<Jogada> itJogada) {
-		this.itJogada = itJogada;
 	}
 
 	public ArrayList<Dado> getLstDadosAtaque() {
@@ -1298,6 +1281,10 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 	public void setLstJogadas(List<Jogada> lstJogadas) {
 		this.lstJogadas = lstJogadas;
+	}
+	
+	public void setJogadaAtual(Jogada j) {
+		this.jogadaAtual = j;
 	}
 
 	public void setLstContinentes(ArrayList<Continente> lstContinentes) {
@@ -1355,9 +1342,9 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	// Tratamento do clique no botão de jogar dados
 	public void btnJogarDados_click() {
 
-		if (vencedor == null) {
+		if (vencedor == null && getJogadorDaVez().getCor().equals(meuExercito.getCor())) {
 
-			if (getJogadaAtual().getNome() == "Atacar" && territorioOrigem.getLstSoldados().size() > 1
+			if (getJogadaAtual().getNome().equals("Atacar") && territorioOrigem.getLstSoldados().size() > 1
 					&& getTerritorioOrigem() != null && getTerritorioDestino() != null) {
 				int qtdDadosAtaque = getTerritorioOrigem().getLstSoldados().size() > 3 ? 3
 						: getTerritorioOrigem().getLstSoldados().size() - 1;
@@ -1457,7 +1444,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	// Tratamento do clique no mapa
 	public void pnlMapa_click(int x, int y, int botaoMouse) {
 
-		if (vencedor == null) {
+		if (vencedor == null && getJogadorDaVez().getCor().equals(meuExercito.getCor())) {
 
 			Territorio t = descobreTerritorioClicado(x, y);
 			Continente c = descobreContinenteClicado(x, y);
@@ -1465,7 +1452,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			if (t != null) {
 				Exercito e = t.getLstSoldados().get(0).getExercito();
 				// Jogada de distribuição
-				if (descobreJogadas().getNome() == "Distribuir" && jogadorDaVez.getLstCartas().size() < 5) {
+				if (descobreJogadas() == getLstJogadas().get(0) && jogadorDaVez.getLstCartas().size() < 5) {
 
 					if (e == jogadorDaVez) { // Se o territorio clicado for do
 												// jogador da vez
@@ -1486,7 +1473,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				}
 
 				// Jogada de Ataque
-				if (descobreJogadas().getNome() == "Atacar") {
+				if (descobreJogadas().getNome().equals("Atacar")) {
 					if (e == jogadorDaVez) { // Se o territorio for do jogador da vez
 						if (t.getLstSoldados().size() > 1) {
 							setTerritorioOrigem(t); // Seta o territorio clicado como territorio de origem
@@ -1502,7 +1489,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				}
 
 				// Jogada de remanejamento
-				if (descobreJogadas().getNome() == "Remanejar") {
+				if (descobreJogadas().getNome().equals("Remanejar")) {
 
 					if (botaoMouse == MouseEvent.BUTTON1) {
 
