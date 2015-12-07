@@ -52,7 +52,7 @@ public class InputScanner implements Runnable {
 					controllerLocal.setTerritorioDestinoState(gameStateFromServer.territorioDestino         );
 				
 				if(gameStateFromServer.mensagem != null)
-					controllerLocal.setMensagem(gameStateFromServer.mensagem                           );
+					controllerLocal.setMensagemState(gameStateFromServer.mensagem                           );
 				
 				controllerLocal.setQtdTroca(gameStateFromServer.qtdTroca                           );
 				controllerLocal.setConquistouTerritorio(gameStateFromServer.conquistouTerritorio   );

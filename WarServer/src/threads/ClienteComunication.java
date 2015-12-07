@@ -33,7 +33,7 @@ public class ClienteComunication implements Runnable {
 				// Pega menssagem do cliente
 				String menssagem = cliente_in.nextLine();
 				
-				System.out.println("Menssagem Recebida = " + menssagem);
+				System.out.println("Menssagem Recebida = " + cliente.ClientSocket.getRemoteSocketAddress().toString());
 				
 				if(menssagem.equals("exit"))
 				{					

@@ -44,9 +44,15 @@ public class Jogador extends PnlBoneco implements Observer {
 		
 		
 		if(controller.possuiTerritorio(this.nome)){
-			// Seta a cor comop preto
-			g2d.setPaint(Color.lightGray);
-		} else {
+			
+			if(controller.getMeuExercito().getNome().equals(this.nome)) {
+				g2d.setPaint(Color.YELLOW);
+			} else {
+				// Seta a cor como preto
+				g2d.setPaint(Color.lightGray);
+			}		
+			
+		} else { 
 			g2d.setPaint(Color.GRAY);
 		}
 		
@@ -79,7 +85,7 @@ public class Jogador extends PnlBoneco implements Observer {
 	}
 	
 	private void marcaPnljogadorAtivo() {
-		if(controller.getJogadorDaVez().getNome() == this.nome) {
+		if(controller.getJogadorDaVez().getNome().equals(this.nome)) {
 			add(indicador);
 		}		
 	}

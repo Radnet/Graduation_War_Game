@@ -10,7 +10,7 @@ public class PnlBoneco extends JPanel {
 	
 	protected String nome;
 	protected Color cor;
-	protected static GeneralPath exercitoShape;
+	protected GeneralPath exercitoShape;
 	
 	// Bloco de inicialização do shape do desenho do exército
 	{
@@ -79,7 +79,7 @@ public class PnlBoneco extends JPanel {
 	}
 	
 	// Retorna o shape do exercito
-	protected static GeneralPath getExercitoShape() {
+	protected GeneralPath getExercitoShape() {
 		return exercitoShape;
 	}
 	

@@ -143,12 +143,12 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
 		notificaMudancas();
+		
 	}
 	
 	public void setMensagemState(String mensagem) {
 		this.mensagem = mensagem;
 		notificaMudancas();
-		ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 	}
 
 	// Carga dos territórios

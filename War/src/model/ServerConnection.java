@@ -64,10 +64,7 @@ public class ServerConnection {
 		gameState.deckObjetivos  = controller.getDeckObjetivos();
 		gameState.jogadorDaVez   = controller.getJogadorDaVez();
 		gameState.lstContinentes = controller.getLstContinentes();
-		gameState.lstJogadas     = controller.getLstJogadas();
-		
-		
-		
+		gameState.lstJogadas     = controller.getLstJogadas();		
 		
 		gameState.jogadaAtual          = controller.getJogadaAtual();  
 		gameState.lstDadosAtaque       = controller.getLstDadosAtaque();
@@ -77,8 +74,7 @@ public class ServerConnection {
 		gameState.mensagem             = controller.getMensagem();
 		gameState.qtdTroca             = controller.getQtdTroca();
 		gameState.conquistouTerritorio = controller.isConquistouTerritorio();
-		gameState.vencedor             = controller.getVencedor();
-		
+		gameState.vencedor             = controller.getVencedor();		
 		
 		String json = JsonWriter.objectToJson(gameState);
 		System.out.println(json);

@@ -87,7 +87,9 @@ public class Territorio implements Serializable {
 	}
 	
 	public void atualizaLblnumsoldados() {
-		lblNumExercitos.setText(lstSoldados.size()+"");
+		int numSoldados = lstSoldados.size();
+		
+		lblNumExercitos.setText(Integer.toString(numSoldados));
 	}
 	
  	public Territorio(String nome, Ponto[] pontos, String nomeCarta, Ponto soldadoPos, int simbolo) {

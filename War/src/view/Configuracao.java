@@ -99,10 +99,19 @@ public class Configuracao extends JFrame implements Serializable {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				
+				lstJogadores.clear();
+				
 				// Se já existem mais de 2 jogadores no tabuleiro, e o exército está selecionado, inicia o jogo
 				if(ControllerTabuleiro.getInstance().tabuleiroPronto()){
 					// Esconde a janela de configuração do jogo.					
 					//System.out.println("Você escolheu o exército" + ControllerTabuleiro.getExercitoJogador());
+					
+					// Adiciona os jogadores no pnlJogadores no tabuleiro 
+					for(model.Exercito jog: ControllerTabuleiro.getInstance().getLstJogadores()) {
+						lstJogadores.add(new Exercito(jog.getNome(), (Color) jog.getCor() ));
+					}
+					PnlJogadores.setJogadores(lstJogadores);
 					
 					ControllerTabuleiro.getInstance().preparaTabuleiro();
 					Tabuleiro.getInstance();
