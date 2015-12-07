@@ -103,7 +103,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		
 		// Se existe algum jogador que já selecionou o exército escolhido pelo jogador
 		for(Exercito ex: lstJogadores) {
-			if(ex.getNome() == s) {
+			if(ex.getNome().equals(s)) {
 				return true;
 			}
 		}
@@ -610,7 +610,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 		// Adiciona os territorios aos continentes
 		for (Continente c : lstContinentes) {
-			if (c.getNome() == "America do norte") {
+			if (c.getNome().equals("America do norte")) {
 				c.getLstTerritorios().add(Alasca);
 				c.getLstTerritorios().add(Calgary);
 				c.getLstTerritorios().add(Groelandia);
@@ -620,19 +620,19 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				c.getLstTerritorios().add(Texas);
 				c.getLstTerritorios().add(Nova_York);
 				c.getLstTerritorios().add(Mexico);
-			} else if (c.getNome() == "America do sul") {
+			} else if (c.getNome().equals("America do sul")) {
 				c.getLstTerritorios().add(Venezuela);
 				c.getLstTerritorios().add(Peru);
 				c.getLstTerritorios().add(Brasil);
 				c.getLstTerritorios().add(Argentina);
-			} else if (c.getNome() == "Africa") {
+			} else if (c.getNome().equals("Africa")) {
 				c.getLstTerritorios().add(Africa_do_Sul);
 				c.getLstTerritorios().add(Somalia);
 				c.getLstTerritorios().add(Angola);
 				c.getLstTerritorios().add(Egito);
 				c.getLstTerritorios().add(Nigeria);
 				c.getLstTerritorios().add(Argelia);
-			} else if (c.getNome() == "Asia") {
+			} else if (c.getNome().equals("Asia")) {
 				c.getLstTerritorios().add(Tailandia);
 				c.getLstTerritorios().add(Bangladesh);
 				c.getLstTerritorios().add(India);
@@ -653,7 +653,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				c.getLstTerritorios().add(Russia);
 				c.getLstTerritorios().add(Siberia);
 				c.getLstTerritorios().add(Japao);
-			} else if (c.getNome() == "Europa") {
+			} else if (c.getNome().equals("Europa")) {
 				c.getLstTerritorios().add(Reino_Unido);
 				c.getLstTerritorios().add(Franca);
 				c.getLstTerritorios().add(Espanha);
@@ -662,7 +662,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				c.getLstTerritorios().add(Romenia);
 				c.getLstTerritorios().add(Ucrania);
 				c.getLstTerritorios().add(Polonia);
-			} else if (c.getNome() == "Oceania") {
+			} else if (c.getNome().equals("Oceania")) {
 				c.getLstTerritorios().add(Australia);
 				c.getLstTerritorios().add(Perth);
 				c.getLstTerritorios().add(Indonesia);
@@ -772,7 +772,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	private Exercito descobreExercito(String nome) {
 		Exercito jogador = null;
 		for (Exercito e : lstJogadores) {
-			if (e.getNome() == nome) {
+			if (e.getNome().equals(nome)) {
 				jogador = e;
 			}
 		}
@@ -822,7 +822,8 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			embaralhaLista(deck.getLstCartas());
 			distribuiCartasInicio();
 			distribuiObjetivos();
-			distribuirExercitosInicio();
+			distribuirExercitosInicio();			
+			calculaSoldados();
 			notificaMudancas();
 			ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 			
@@ -1056,7 +1057,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	private Carta descobreCarta(String nomeTerritorio) {
 		for (Carta c : jogadorDaVez.getLstCartas()) {
 			if (c.getTerritorio() != null) {
-				if (c.getTerritorio().getNome() == nomeTerritorio) {
+				if (c.getTerritorio().getNome().equals(nomeTerritorio)) {
 					return c;
 				}
 			} else {
@@ -1129,9 +1130,25 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		this.territorioOrigem = territorioOrigem;
 		this.territorioDestino = null;
 		String string1 = null;
-		if (descobreJogadas().getNome() == "Atacar") {
+		if (descobreJogadas().getNome().equals("Atacar")) {
 			string1 = "Origem: ";
-		} else if (descobreJogadas().getNome() == "Remanejar") {
+		} else if (descobreJogadas().getNome().equals("Remanejar")) {
+			string1 = "Remanejando soldados a partir de: ";
+		}
+		if (getTerritorioOrigem() != null) {
+			setMensagem(string1 + getTerritorioOrigem().getNome());
+		} 
+		notificaMudancas();
+		ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());		
+	}
+	
+	public void setTeritorioOrigemState(Territorio territorioOrigem) {
+		this.territorioOrigem = territorioOrigem;
+		this.territorioDestino = null;
+		String string1 = null;
+		if (descobreJogadas().getNome().equals("Atacar")) {
+			string1 = "Origem: ";
+		} else if (descobreJogadas().getNome().equals("Remanejar")) {
 			string1 = "Remanejando soldados a partir de: ";
 		}
 		if (getTerritorioOrigem() != null) {
@@ -1142,6 +1159,16 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 	// Seta o território passado como parâmetro como território de destino de um ataque/remanejamento
 	public void setTerritorioDestino(Territorio territorioDestino) {
+		this.territorioDestino = territorioDestino;
+		if (getTerritorioDestino() != null) {
+			setMensagem(
+					"Origem: " + getTerritorioOrigem().getNome() + " | Destino: " + getTerritorioDestino().getNome());
+		}
+		notificaMudancas();
+		ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
+	}
+	
+	public void setTerritorioDestinoState(Territorio territorioDestino) {
 		this.territorioDestino = territorioDestino;
 		if (getTerritorioDestino() != null) {
 			setMensagem(
@@ -1176,7 +1203,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	// Randimiza o valor dos dados de acordo com o tipo e com a quantidade de dados
 	public void JogaDados(char tipo, int numDados) {
 
-		if (descobreJogadas().getNome() == "Atacar") {
+		if (descobreJogadas().getNome().equals("Atacar")) {
 
 			if (getTerritorioOrigem() != null && getTerritorioDestino() != null) {
 
@@ -1456,7 +1483,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			if (t != null) {
 				Exercito e = t.getLstSoldados().get(0).getExercito();
 				// Jogada de distribuição
-				if (descobreJogadas() == getLstJogadas().get(0) && jogadorDaVez.getLstCartas().size() < 5) {
+				if (descobreJogadas().getNome().equals("Distribuir") && jogadorDaVez.getLstCartas().size() < 5) {
 
 					if (e == jogadorDaVez) { // Se o territorio clicado for do
 												// jogador da vez

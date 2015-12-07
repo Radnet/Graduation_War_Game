@@ -46,10 +46,10 @@ public class InputScanner implements Runnable {
 				controllerLocal.setLstDadosDefesa(gameStateFromServer.lstDadosDefesa               );
 
 				if(gameStateFromServer.territorioOrigem != null)				
-					controllerLocal.setTerritorioOrigem(gameStateFromServer.territorioOrigem           );
+					controllerLocal.setTeritorioOrigemState(gameStateFromServer.territorioOrigem           );
 				
 				if(gameStateFromServer.territorioDestino != null)
-					controllerLocal.setTerritorioDestino(gameStateFromServer.territorioDestino         );
+					controllerLocal.setTerritorioDestinoState(gameStateFromServer.territorioDestino         );
 				
 				if(gameStateFromServer.mensagem != null)
 					controllerLocal.setMensagem(gameStateFromServer.mensagem                           );
