@@ -22,7 +22,7 @@ public class Objetivo_9 extends Objetivo{
 			// Para cada território
 			for(Territorio t: c.getLstTerritorios()) {
 				// Se o território possui soldado do exército passado como parâmetro
-				if(t.getLstSoldados().get(0).getExercito() == e) {
+				if(t.getLstSoldados().get(0).getExercito().equals(e)) {
 					
 					// Retorna false, indicando que não foi atingido o objetivo.
 					return false;

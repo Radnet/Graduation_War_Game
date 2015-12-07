@@ -35,6 +35,7 @@ public class PnlMapa extends JPanel implements Observer {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				controller.pnlMapa_click(e.getX(), e.getY(), e.getButton());
+				repaint();
 				
 			}
 			

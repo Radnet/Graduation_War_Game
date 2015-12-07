@@ -143,7 +143,12 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
 		notificaMudancas();
-		this.mensagem = null;
+	}
+	
+	public void setMensagemState(String mensagem) {
+		this.mensagem = mensagem;
+		notificaMudancas();
+		ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 	}
 
 	// Carga dos territórios
@@ -697,7 +702,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		// Calcula quanto territorios o exercito tem
 		for (Continente c : getLstContinentes()) {
 			for (Territorio t : c.getLstTerritorios()) {
-				if (t.getLstSoldados().get(0).getExercito() == exAtivo) {
+				if (t.getLstSoldados().get(0).getExercito().getCor().equals(exAtivo.getCor())) {
 					i++;
 				}
 			}
@@ -791,7 +796,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 		for (Continente c : lstContinentes) {
 			for (Territorio t : c.getLstTerritorios()) {
-				if (t.getLstSoldados().get(0).getExercito() == e) {
+				if (t.getLstSoldados().get(0).getExercito().getCor().equals(e.getCor())) {
 					return true;
 				}
 			}
@@ -818,6 +823,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 		if (lstJogadores.size() > 0) {			
 			deck = Deck.getInstance();
+			embaralhaLista(getLstJogadores());
 			proxJogador();
 			embaralhaLista(deck.getLstCartas());
 			distribuiCartasInicio();
@@ -825,8 +831,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			distribuirExercitosInicio();			
 			calculaSoldados();
 			notificaMudancas();
-			ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
-			
+			ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());			
 		}
 	}
 
@@ -857,7 +862,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 				// Se o exército alvo é o exercito da vez da distribuição dos
 				// objetivos
-				if (o.getExercitoAlvo() == e) {
+				if (o.getExercitoAlvo().getCor().equals(e.getCor())) {
 
 					// Seta o objetivo de 24 territórios
 					e.setObjetivo(new Objetivo_1());
@@ -1097,7 +1102,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			for (int i = 0; i < TerritorioCartas.length; i++) {
 				Carta carta = descobreCarta(TerritorioCartas[i]);
 				if (carta.getTerritorio() != null
-						&& carta.getTerritorio().getLstSoldados().get(0).getExercito() == jogadorDaVez) {
+						&& carta.getTerritorio().getLstSoldados().get(0).getExercito().getCor().equals(jogadorDaVez.getCor())) {
 					carta.getTerritorio().addSoldado(new Soldado(jogadorDaVez));
 					mensagem += " + 1 (" + carta.getTerritorio().getNome() + ")";
 				}
@@ -1191,7 +1196,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	public void unsetJogador(Object cor) {
 		
 		for(int i = 0; i < lstJogadores.size(); i++) {
-			if(lstJogadores.get(i).getCor() == cor) {
+			if(lstJogadores.get(i).getCor().equals(cor)) {
 				lstJogadores.remove(lstJogadores.get(i));
 			}
 		}
@@ -1434,27 +1439,50 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 	// Move o soldado de continente da reserva para o territorio passado por parametro 
 	private boolean moveSoldadoContinente(Continente c, Territorio t) {
-		ListIterator<Soldado> itSoldado = jogadorDaVez.getLstSoldados().listIterator(0);
 
-		while (itSoldado.hasNext()) {
-			Soldado s = itSoldado.next();
-			if (s.getContinente() == c) {
+		
+		for(int i = 0; i < jogadorDaVez.getLstSoldados().size(); i++) {
+			Soldado s = pegaSoldadoContinente(c);
+			if(s != null){
 				moveEntreListas(jogadorDaVez.getLstSoldados(), t.getLstSoldados(), s);
 				setMensagem("Soldado bunus do continente " + s.getContinente().getNome() + " alocado no territorio "
-						+ t.getNome());
+				+ t.getNome());
 				return true;
-			}
+			}	
 		}
 		return false;
+	}
+	
+	private Soldado pegaSoldadoContinente(Continente c) {
+		
+		for(Soldado s1: jogadorDaVez.getLstSoldados()) {
+			if(s1.getContinente().getCor().equals(c.getCor())) {
+				return s1;
+			}
+		}
+		
+		return null;
+		
+	}
+	
+private Soldado pegaSoldadoAvulso() {
+		
+		for(Soldado s1: getJogadorDaVez().getLstSoldados()) {
+			if(s1.getContinente() == null) {
+				return s1;
+			}
+		}
+		
+		return null;
+		
 	}
 
 	// Move um soldado avulso (sem continente específico) para o territorio especificado
 	private boolean moveSoldadoAvulso(Territorio t) {
-		ListIterator<Soldado> itSoldado = jogadorDaVez.getLstSoldados().listIterator(0);
 
-		while (itSoldado.hasNext()) {
-			Soldado s = itSoldado.next();
-			if (s.getContinente() == null) {
+		for(int i = 0; i < jogadorDaVez.getLstSoldados().size(); i++) {
+			Soldado s = pegaSoldadoAvulso();
+			if(s != null) {
 				moveEntreListas(jogadorDaVez.getLstSoldados(), t.getLstSoldados(), s);
 				setMensagem("Soldado avulso alocado no territorio " + t.getNome());
 				return true;
@@ -1490,12 +1518,12 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				// Jogada de distribuição
 				if (descobreJogadas().getNome().equals("Distribuir") && jogadorDaVez.getLstCartas().size() < 5) {
 
-					if (e == jogadorDaVez) { // Se o territorio clicado for do
+					if (e.getCor().equals(jogadorDaVez.getCor())) { // Se o territorio clicado for do
 												// jogador da vez
 
-						if (moveSoldadoContinente(c, t)) {
+						if (moveSoldadoAvulso(t)) {
 
-						} else if (moveSoldadoAvulso(t)) {
+						} else if (moveSoldadoContinente(c, t)) {
 
 						} else if (jogadorDaVez.getLstSoldados().size() > 0) {
 							setMensagem(
@@ -1510,7 +1538,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 				// Jogada de Ataque
 				if (descobreJogadas().getNome().equals("Atacar")) {
-					if (e == jogadorDaVez) { // Se o territorio for do jogador da vez
+					if (e.getCor().equals(jogadorDaVez.getCor())) { // Se o territorio for do jogador da vez
 						if (t.getLstSoldados().size() > 1) {
 							setTerritorioOrigem(t); // Seta o territorio clicado como territorio de origem
 							notificaMudancas();
@@ -1529,7 +1557,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 					if (botaoMouse == MouseEvent.BUTTON1) {
 
-						if (e == jogadorDaVez) {
+						if (e.getCor().equals(jogadorDaVez.getCor())) {
 							if (getTerritorioOrigem() != t) {
 								setTerritorioOrigem(t);
 							} else {
@@ -1538,7 +1566,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 						}
 
 					} else if (botaoMouse == MouseEvent.BUTTON3) {
-						if (e == jogadorDaVez) {
+						if (e.getCor().equals(jogadorDaVez.getCor())) {
 							if (getTerritorioOrigem() != null && getTerritorioOrigem().getLstSoldados().size() > 1
 									&& getTerritorioOrigem().getLstFronteiras().contains(t)) {
 								Soldado soldado = getTerritorioOrigem().getLstSoldados().get(0);

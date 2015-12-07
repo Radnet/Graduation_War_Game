@@ -110,7 +110,7 @@ public class Tabuleiro extends JFrame implements Observer {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				if(!controller.getJogadorDaVez().equals(controller.getMeuExercito())) {
+				if(!controller.getJogadorDaVez().getCor().equals(controller.getMeuExercito().getCor())) {
 					pnlModalCartas.btnEfetuarTroca.setEnabled(false);
 				} else {
 					pnlModalCartas.btnEfetuarTroca.setEnabled(true);
