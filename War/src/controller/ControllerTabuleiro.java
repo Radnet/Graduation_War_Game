@@ -870,7 +870,12 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				}
 			}
 		}
-
+		// Seta o objetivo no meuExercito
+		for(Exercito e: getLstJogadores()) {
+			if(e.getCor().equals(meuExercito.getCor())) {
+				meuExercito.setObjetivo(e.getObjetivo());
+			}
+		}
 	}
 
 	// Distribui as cartas no início do jogo

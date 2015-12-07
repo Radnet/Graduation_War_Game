@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import model.Config;
+import model.ServerConnection;
 import controller.ControllerTabuleiro;
 
 @SuppressWarnings("serial")
@@ -339,6 +340,7 @@ public class Tabuleiro extends JFrame implements Observer {
 				} else {
 					pnlModalCartas.setVisible(false);
 					controller.btnProxJogada_click();
+					ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 				}
 
 			}
