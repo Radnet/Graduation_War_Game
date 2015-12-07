@@ -117,7 +117,7 @@ public class Tabuleiro extends JFrame implements Observer {
 				}
 				
 				if(pnlModalCartas.isVisible()) {
-					if(controller.getJogadorDaVez().getLstCartas().size() < 5)
+					if(controller.getMeuExercito().getLstCartas().size() < 5)
 						pnlModalCartas.setVisible(false);
 				} else {
 					pnlModalCartas.setVisible(true);
@@ -335,7 +335,7 @@ public class Tabuleiro extends JFrame implements Observer {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				if(controller.getJogadaAtual().getNome().equals("Distribuir") && controller.getJogadorDaVez().getLstCartas().size() > 4 ) {
+				if(controller.getJogadaAtual().getNome().equals("Distribuir") && controller.getMeuExercito().getLstCartas().size() > 4 ) {
 					
 				} else {
 					pnlModalCartas.setVisible(false);
@@ -363,7 +363,7 @@ public class Tabuleiro extends JFrame implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		repaint();
-		if(controller.getJogadaAtual() != null && controller.getJogadorDaVez() != null && controller.getJogadorDaVez().getLstCartas().size() > 4) {
+		if(controller.getJogadaAtual() != null && controller.getJogadorDaVez() != null && controller.getMeuExercito().getLstCartas().size() > 4) {
 			pnlModalCartas.setVisible(true);
 		}
 		

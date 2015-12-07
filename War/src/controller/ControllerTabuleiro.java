@@ -807,7 +807,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		if (e.isJogadorFora()) {
 			ArrayList<Carta> lstCartaAux = new ArrayList<>(e.getLstCartas());
 			for (Carta c : e.getLstCartas()) {
-				moveEntreListas(lstCartaAux, jogadorDaVez.getLstCartas(), c);
+				moveEntreListas(lstCartaAux, meuExercito.getLstCartas(), c);
 			}
 			e.getLstCartas().clear();
 		}
@@ -951,8 +951,8 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			jogadaAtual.setAtivo();
 			
 			if (conquistouTerritorio) {
-				moveEntreListas(deck.getLstCartas(), jogadorDaVez.getLstCartas(), deck.getLstCartas().get(0));
-				setMensagem(jogadorDaVez.getLstCartas().get(jogadorDaVez.getLstCartas().size() - 1).getImagem());
+				moveEntreListas(deck.getLstCartas(), meuExercito.getLstCartas(), deck.getLstCartas().get(0));
+				setMensagem(meuExercito.getLstCartas().get(meuExercito.getLstCartas().size() - 1).getImagem());
 			}
 			
 			conquistouTerritorio = false;
@@ -1050,12 +1050,12 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		Object retorno[];
 		retorno = new Object[3];
 
-		if (jogadorDaVez.getLstCartas().size() > 0) {
-			if (i < jogadorDaVez.getLstCartas().size()) {
-				retorno[0] = jogadorDaVez.getLstCartas().get(i).getImagem();
-				retorno[1] = jogadorDaVez.getLstCartas().get(i).getTerritorio() != null
-						? jogadorDaVez.getLstCartas().get(i).getTerritorio().getNome() : null;
-				retorno[2] = jogadorDaVez.getLstCartas().get(i).getSimbolo();
+		if (meuExercito.getLstCartas().size() > 0) {
+			if (i < meuExercito.getLstCartas().size()) {
+				retorno[0] = meuExercito.getLstCartas().get(i).getImagem();
+				retorno[1] = meuExercito.getLstCartas().get(i).getTerritorio() != null
+						? meuExercito.getLstCartas().get(i).getTerritorio().getNome() : null;
+				retorno[2] = meuExercito.getLstCartas().get(i).getSimbolo();
 
 				return retorno;
 			}
@@ -1065,7 +1065,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 	// Descobre qual a carta pelo nome do território
 	private Carta descobreCarta(String nomeTerritorio) {
-		for (Carta c : jogadorDaVez.getLstCartas()) {
+		for (Carta c : meuExercito.getLstCartas()) {
 			if (c.getTerritorio() != null) {
 				if (c.getTerritorio().getNome().equals(nomeTerritorio)) {
 					return c;
@@ -1081,7 +1081,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 
 	// Devolve a carta passada como parametro para o deck
 	public void devolveCartaAoDeck(Carta c) {
-		moveEntreListas(jogadorDaVez.getLstCartas(), deck.getLstCartas(), c);
+		moveEntreListas(meuExercito.getLstCartas(), deck.getLstCartas(), c);
 	}
 
 	// Executa a troca de cartas por exércitos
@@ -1516,7 +1516,7 @@ private Soldado pegaSoldadoAvulso() {
 			if (t != null) {
 				Exercito e = t.getLstSoldados().get(0).getExercito();
 				// Jogada de distribuição
-				if (descobreJogadas().getNome().equals("Distribuir") && jogadorDaVez.getLstCartas().size() < 5) {
+				if (descobreJogadas().getNome().equals("Distribuir") && meuExercito.getLstCartas().size() < 5) {
 
 					if (e.getCor().equals(jogadorDaVez.getCor())) { // Se o territorio clicado for do
 												// jogador da vez
