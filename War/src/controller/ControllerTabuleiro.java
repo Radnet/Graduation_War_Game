@@ -987,7 +987,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			mensagem += " (botão esquerdo seleciona origem, botão direito move soldados)";
 		}
 		setMensagem(mensagem);
-		ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
+		//ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 		return jogadaAtual;
 	}
 
@@ -1156,9 +1156,10 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		}
 		if (getTerritorioOrigem() != null) {
 			setMensagem(string1 + getTerritorioOrigem().getNome());
+			ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 		} 
 		notificaMudancas();
-		ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());		
+				
 	}
 	
 	public void setTeritorioOrigemState(Territorio territorioOrigem) {
@@ -1182,9 +1183,10 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		if (getTerritorioDestino() != null) {
 			setMensagem(
 					"Origem: " + getTerritorioOrigem().getNome() + " | Destino: " + getTerritorioDestino().getNome());
+			ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 		}
 		notificaMudancas();
-		ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
+		
 	}
 	
 	public void setTerritorioDestinoState(Territorio territorioDestino) {
