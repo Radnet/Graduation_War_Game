@@ -38,7 +38,7 @@ public class InputScanner implements Runnable {
 				controllerLocal.setDeck(gameStateFromServer.deck);
 				controllerLocal.setDeckObjetivos(gameStateFromServer.deckObjetivos);
 				controllerLocal.setJogadorDaVez(gameStateFromServer.jogadorDaVez);
-				controllerLocal.setLstContinentes(gameStateFromServer.lstContinentes);
+				controllerLocal.setLstContinentes(gameStateFromServer.dicTerriSold);
 				controllerLocal.setLstJogadas(gameStateFromServer.lstJogadas);
 				
 				controllerLocal.setJogadaAtual(gameStateFromServer.jogadaAtual                      );

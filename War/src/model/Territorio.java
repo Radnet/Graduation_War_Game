@@ -41,6 +41,10 @@ public class Territorio implements Serializable {
 	private ArrayList<Territorio> lstFronteiras = new ArrayList<Territorio>();
 	private ArrayList<Soldado> lstSoldados = new ArrayList<Soldado>();
 	
+	public void setLstSoldados(ArrayList<Soldado> lstSoldados) {
+		this.lstSoldados = lstSoldados;
+	}
+
 	JLabel lblNumExercitos = new JLabel();
 	
 	public Territorio() {

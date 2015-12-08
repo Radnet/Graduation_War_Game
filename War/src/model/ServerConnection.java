@@ -63,7 +63,17 @@ public class ServerConnection {
 		gameState.deck           = controller.getDeck();
 		gameState.deckObjetivos  = controller.getDeckObjetivos();
 		gameState.jogadorDaVez   = controller.getJogadorDaVez();
-		gameState.lstContinentes = controller.getLstContinentes();
+		//gameState.lstContinentes = controller.getLstContinentes();
+		
+		gameState.dicTerriSold = new HashMap<String, ArrayList<Soldado>>();
+		
+		for (Continente cont : controller.getLstContinentes()) 
+		{
+			for (Territorio terri : cont.getLstTerritorios()) 
+			{
+				gameState.dicTerriSold.put(terri.getNome(), terri.getLstSoldados());
+			}
+		}
 		gameState.lstJogadas     = controller.getLstJogadas();		
 		
 		gameState.jogadaAtual          = controller.getJogadaAtual();  

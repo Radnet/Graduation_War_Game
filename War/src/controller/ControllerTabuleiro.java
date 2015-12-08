@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.*;
+import java.util.Map.Entry;
 
 import model.*;
 
@@ -1336,30 +1337,22 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 		this.jogadaAtual = j;
 	}
 
-	public void setLstContinentes(ArrayList<Continente> lstContinentes) {
-		
-		for(Continente cont : this.lstContinentes)
+	public void setLstContinentes(HashMap<String, ArrayList<Soldado>> dicTerriSold) {
+
+		for (Continente cont : this.lstContinentes) 
 		{
-			for(Continente contServer : lstContinentes)
+			for (Territorio terri : cont.getLstTerritorios()) 
 			{
-				if(contServer.getNome().equals(cont.getNome()))
+				for (Entry<String, ArrayList<Soldado>> serverEnty : dicTerriSold.entrySet()) 
 				{
-					for(Territorio terri : cont.getLstTerritorios())
+					if (terri.getNome().equals(serverEnty.getKey())) 
 					{
-						for(Territorio terriServer : contServer.getLstTerritorios())
-						{
-							if(terri.getNome().equals(terriServer.getNome()))
-							{
-								terriServer.setShape(terri.GetShapeGeneralPath());
-							}
-						}
+						terri.setLstSoldados(serverEnty.getValue());
 					}
 				}
 			}
 		}
 		
-		
-		this.lstContinentes = lstContinentes;
 	}
 
 	public void setDeck(Deck deck) {
