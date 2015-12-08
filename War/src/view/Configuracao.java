@@ -227,12 +227,6 @@ public class Configuracao extends JFrame implements Serializable {
 						ControllerTabuleiro.setMeuExercito(ex.getNome(), ex.getCor());
 						ControllerTabuleiro.getInstance().setJogador(ex.getNome(), ex.getCor());
 						ex.setSelecionado();
-						try {
-							ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
 						repaint();
 						System.out.println("Exército selecionado: " + ControllerTabuleiro.getExercitoJogador());
 					}

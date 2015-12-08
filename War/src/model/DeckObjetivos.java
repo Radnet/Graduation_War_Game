@@ -34,9 +34,9 @@ public class DeckObjetivos implements Serializable {
 		lstObjetivos.add(new Objetivo_7());
 		lstObjetivos.add(new Objetivo_8());
 		
-		for(Exercito e: ControllerTabuleiro.getInstance().getLstJogadores()){
-			lstObjetivos.add(new Objetivo_9(e));
-		}
+//		for(Exercito e: ControllerTabuleiro.getInstance().getLstJogadores()){
+//			lstObjetivos.add(new Objetivo_9(e));
+//		}
 		
 		embaralhaDeck();
 	}

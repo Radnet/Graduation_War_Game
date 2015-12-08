@@ -89,6 +89,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	public static ControllerTabuleiro getInstance() {		
 		if (controller == null) {
 			controller = new ControllerTabuleiro();
+			DeckObjetivos.getInstance();
 		}
 		return controller;
 	}
@@ -879,6 +880,8 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 					e.setObjetivo(o);
 				}
 			}
+			
+			
 		}
 		// Seta o objetivo no meuExercito
 		for(Exercito e: getLstJogadores()) {
