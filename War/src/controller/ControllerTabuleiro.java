@@ -828,8 +828,13 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			embaralhaLista(deck.getLstCartas());
 			distribuiCartasInicio();
 			distribuiObjetivos();
-			distribuirExercitosInicio();			
+			distribuirExercitosInicio();
+			
+			for(Exercito e: getLstJogadores()) {
+				e.lstSoldadosClear();
+			}
 			calculaSoldados();
+			
 			notificaMudancas();
 			ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());			
 		}

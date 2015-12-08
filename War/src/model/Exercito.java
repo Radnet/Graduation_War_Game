@@ -64,6 +64,10 @@ public class Exercito implements Serializable {
 	public ArrayList<Soldado> getLstSoldados() {
 		return lstSoldados;
 	}
+	
+	public void lstSoldadosClear() {
+		lstSoldados.clear();
+	}
 
 	public Objetivo getObjetivo() {
 		return objetivo;
