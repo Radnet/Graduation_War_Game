@@ -30,6 +30,8 @@ public class ServerConnection {
 			// Setting ip and port
 			ip = linhasIp.get(0);
 			port = linhasIp.get(1);
+			
+			System.out.println("Tentando se conectar ao servidor " + ip + " na porta " + port);
 
 			// Opening connecting
 			servidorSocket = new Socket(ip, Integer.parseInt(port));
@@ -40,7 +42,7 @@ public class ServerConnection {
 			// Starting listener for server incoming messages
 			StartServerListener();
 
-			System.out.println("O cliente se conectou ao servidor!");
+			System.out.println("Conectado!");
 
 		} catch (Exception e) {
 			e.printStackTrace();
