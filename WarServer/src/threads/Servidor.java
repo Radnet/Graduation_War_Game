@@ -42,15 +42,15 @@ public class Servidor {
 			Path path = Paths.get(pathString + "\\port.txt");
 			List<String> linhasIp = Files.readAllLines(path);
 			
-			// Abrindo socket para comunicaÁ„o com clientes
+			// Abrindo socket para comunica√ß√£o com clientes
 			servidor = new ServerSocket(Integer.parseInt(linhasIp.get(0)));
 			
-			System.out.println("Porta 12345 aberta!");
+			System.out.println("Porta " + servidor + " aberta!");
 			
 			// Enquanto nenhum cliente interromper
 			while (!stopAll) 
 			{
-				// Aguardando conex„o com cliente
+				// Aguardando conex√£o com cliente
 				Socket clienteSocket    = servidor.accept();
 				
 				// Setando informacoes do usuario
@@ -68,11 +68,11 @@ public class Servidor {
 				// Mapeando cliente em um dicionario 
 				mapClientes.put(clienteSocket.getRemoteSocketAddress().toString(), clientInfo);
 				
-				// Dispara uma thread que trata esse cliente e j· espera o prÛximo
+				// Dispara uma thread que trata esse cliente e j√° espera o pr√≥ximo
 				clientInfo.ThreadClientCommunication.start();
 			}
 								
-			// Fechando conex„o
+			// Fechando conex√£o
 			servidor.close();		
 			
 			System.out.println("O servidor terminou de executar!");
