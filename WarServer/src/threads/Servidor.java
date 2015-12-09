@@ -45,7 +45,7 @@ public class Servidor {
 			// Abrindo socket para comunicação com clientes
 			servidor = new ServerSocket(Integer.parseInt(linhasIp.get(0)));
 			
-			System.out.println("Porta " + servidor + " aberta!");
+			System.out.println("Servidor pronto e escutando porta: " + servidor.getLocalPort());
 			
 			// Enquanto nenhum cliente interromper
 			while (!stopAll) 
