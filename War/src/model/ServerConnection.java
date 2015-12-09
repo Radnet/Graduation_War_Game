@@ -87,7 +87,7 @@ public class ServerConnection {
 		gameState.vencedor             = controller.getVencedor();		
 		
 		String json = JsonWriter.objectToJson(gameState);
-		System.out.println(json);
+		System.out.println("Mensagem recebida do servidor");
 		servidorStream.println(json);
 
 	}

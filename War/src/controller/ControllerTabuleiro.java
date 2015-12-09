@@ -1426,7 +1426,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				}
 			}
 		}
-
+		ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 	}
 
 	// Exibe a mensagem de vencedor
@@ -1450,6 +1450,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				moveEntreListas(jogadorDaVez.getLstSoldados(), t.getLstSoldados(), s);
 				setMensagem("Soldado bunus do continente " + s.getContinente().getNome() + " alocado no territorio "
 				+ t.getNome());
+				ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 				return true;
 			}	
 		}
@@ -1488,6 +1489,7 @@ private Soldado pegaSoldadoAvulso() {
 			if(s != null) {
 				moveEntreListas(jogadorDaVez.getLstSoldados(), t.getLstSoldados(), s);
 				setMensagem("Soldado avulso alocado no territorio " + t.getNome());
+				ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 				return true;
 			}
 		}
