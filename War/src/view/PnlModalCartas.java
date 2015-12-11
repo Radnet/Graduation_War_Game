@@ -52,7 +52,7 @@ public class PnlModalCartas extends JPanel implements Observer {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(controller.getMeuExercito().getLstCartas().size() < 5) {
+				if(controller.getMeuExercito().getLstCartas().size() < 5 && !controller.getJogadaAtual().equals("Distribuir")) {
 					setVisible(false);
 				}
 			}

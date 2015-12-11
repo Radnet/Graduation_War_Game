@@ -363,7 +363,7 @@ public class Tabuleiro extends JFrame implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		repaint();
-		if(controller.getJogadaAtual() != null && controller.getJogadorDaVez() != null && controller.getMeuExercito().getLstCartas().size() > 4) {
+		if(controller.getJogadaAtual().equals("Distribuir") && controller.getJogadorDaVez() == controller.getMeuExercito() && controller.getMeuExercito().getLstCartas().size() > 4) {
 			pnlModalCartas.setVisible(true);
 		}
 		

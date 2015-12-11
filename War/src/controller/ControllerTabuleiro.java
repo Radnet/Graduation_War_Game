@@ -1281,10 +1281,10 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 			Exercito alvo = jogadorDaVez.getObjetivo().getExercitoAlvo();
 			
 			// Se o check do objetivo do jogador for igual a true
-			if (alvo == null && jogadorDaVez.getObjetivo().Check(lstContinentes, jogadorDaVez)) {
+			if (alvo == null && meuExercito.getObjetivo().Check(lstContinentes, meuExercito)) {
 				setVencedor();
 				telaVencedor();
-			} else if(alvo != null && jogadorDaVez.getObjetivo().Check(lstContinentes, jogadorDaVez.getObjetivo().getExercitoAlvo())) {
+			} else if(alvo != null && meuExercito.getObjetivo().Check(lstContinentes, meuExercito.getObjetivo().getExercitoAlvo())) {
 				setVencedor();
 				telaVencedor();
 			}
@@ -1432,7 +1432,7 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 	// Exibe a mensagem de vencedor
 	public void telaVencedor() {
 		setMensagem("Exercito " + vencedor.getNome() + " ganhou o jogo! Objetivo: "
-				+ jogadorDaVez.getObjetivo().getDescricao());
+				+ meuExercito.getObjetivo().getDescricao());
 	}
 
 	// Retorna o jogador vencedor
@@ -1450,7 +1450,6 @@ public class ControllerTabuleiro extends Observable implements Serializable {
 				moveEntreListas(jogadorDaVez.getLstSoldados(), t.getLstSoldados(), s);
 				setMensagem("Soldado bunus do continente " + s.getContinente().getNome() + " alocado no territorio "
 				+ t.getNome());
-				ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 				return true;
 			}	
 		}
@@ -1489,7 +1488,6 @@ private Soldado pegaSoldadoAvulso() {
 			if(s != null) {
 				moveEntreListas(jogadorDaVez.getLstSoldados(), t.getLstSoldados(), s);
 				setMensagem("Soldado avulso alocado no territorio " + t.getNome());
-				ServerConnection.GetInstance().SendMessageToServer(ControllerTabuleiro.getInstance());
 				return true;
 			}
 		}
@@ -1498,7 +1496,6 @@ private Soldado pegaSoldadoAvulso() {
 
 	// Remove o continente dos soldados
 	private void zeraSoldadosImigrantes() {
-
 		for (Continente c : lstContinentes) {
 			for (Territorio t : c.getLstTerritorios()) {
 				for (Soldado s : t.getLstSoldados()) {
